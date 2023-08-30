@@ -1,24 +1,24 @@
 import React from "react";
 import "./App.css";
-import Layout from "./Componenets/Layout";
+import Signup from "./Pages/Signup";
 import Home from "./Pages/Home";
-import Navbar from "./Pages/Navbar";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import SignupPage from "./Pages/Signup";
-import LoginPage from "./Pages/Login.Js";
+import { Route, Routes } from "react-router-dom";
+
 import PageNotFound from "./Pages/PageNotFound";
+import LogingIn from "./Pages/LogingIn.js";
+import Bookeeping from "./Pages/Bookeeping";
+import Income from "./Pages/Income";
 function App() {
   return (
     <div className="App">
-      <Navbar />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={Layout(<Home />)} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<LogingIn />} />
+        <Route path="/bookkeeping" element={<Bookeeping/>}/>
+        <Route path="/income" element={<Income/>}/>
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
     </div>
   );
 }
