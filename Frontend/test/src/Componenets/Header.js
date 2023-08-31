@@ -5,7 +5,8 @@ const Header = () => {
   return (
     <div className="header">
       <div className="logo">
-        <img src="#" alt="comapny-logo" />
+        {/* <img src="#" alt="comapny-logo" /> */}
+        <h2>Laymans-Tax</h2>
       </div>
       <div className="navbar">
         <nav>

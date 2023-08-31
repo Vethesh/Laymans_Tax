@@ -1,6 +1,7 @@
 import React from "react";
 import Layout from "../Componenets/Layout";
-import Img from "../Images/bgg.jpg";
+import Img from "../Images/bgg1.jpg"; 
+import './style.css';
 const Home = () => {
   return (
     <div className="home">
