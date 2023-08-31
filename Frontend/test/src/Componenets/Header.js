@@ -11,10 +11,10 @@ const Header = () => {
         <nav>
           <ul>
             <li style={{ cursor: "pointer" }}>
-              <Link to={"/bookkeeping"}>Book Keeping</Link>
+              <Link to={"/"}>Home</Link>
             </li>
             <li style={{ cursor: "pointer" }}>
-              <Link to={"/income"}> Income</Link>
+              <Link to={"/about"}> about us</Link>
             </li>
             <li style={{ cursor: "pointer" }}>
               <Link to={"/signup"}> signup</Link>

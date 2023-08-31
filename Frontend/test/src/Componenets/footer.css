@@ -1,0 +1,138 @@
+
+
+.main-f {
+    width: 100%;
+    background: linear-gradient(to right, #00093c, #2d0b00);
+    color: #fff;
+    font-size:1rem;
+    bottom: 0;
+}
+
+.row {
+    width: 85%;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.col {
+    flex-basis: 25%;
+    padding: 10px;
+}
+
+.col:nth-child(2),
+.col:nth-child(3) {
+    flex-basis: 15%;
+}
+
+.logo {
+    width: 80px;
+    margin-bottom: 30px;
+}
+
+.col h3 {
+    width: fit-content;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.email-id {
+    width: fit-content;
+    border-bottom: 1px solid #ccc;
+    margin: 20px 0;
+}
+
+.col ul li {
+    list-style: none;
+    margin-bottom: 12px;
+}
+
+.col ul li Link{
+    text-decoration: none;
+    color: white;
+}
+
+.fab {
+    font-size: 1.5rem;
+    border-radius: 50%;
+    text-align: center;
+    margin-right: 15px;
+    margin-top:5px ;
+    cursor: pointer;
+}
+.fa-facebook:hover
+{
+    color:blue;
+}
+.fa-twitter:hover {
+   color: aqua;
+}
+.fa-whatsapp:hover {
+   color: green;
+}
+.fa-youtube:hover {
+    color: red;
+}
+hr {
+    width: 90%;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+    margin: 20px auto;
+}
+
+.copyright {
+    text-align: center;
+}
+
+.underline {
+    width: 100%;
+    height: 5px;
+    background: #767676;
+    border-radius: 3px;
+    position: absolute;
+    top: 30px;
+    left: 0;
+    overflow: hidden;
+}
+
+
+.underline span {
+    width: 15px;
+    height: 100%;
+    background: #fff;
+    border-radius: 3px;
+    position: absolute;
+    top: 0;
+    left: 10px;
+    animation: moving 2s linear infinite;
+
+}
+
+
+@keyframes moving {
+    0% {
+        left: -20px;
+    }
+
+    100% {
+        left: 100px;
+    }
+}
+
+@media (max-width: 700px) {
+    .main {
+        bottom: unset;
+    }
+
+    .col {
+        flex-basis: 100%;
+    }
+
+    .col:nth-child(2),
+    .col:nth-child(3) {
+        flex-basis: 100%;
+    }
+
+}
