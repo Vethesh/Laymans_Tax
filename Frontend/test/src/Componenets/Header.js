@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
+// import { GitHaburgerMenu } from "react-icons/gi";
 
 const Header = () => {
   return (
@@ -34,6 +35,11 @@ const Header = () => {
             <GiHamburgerMenu />
           </Link>
         </div>
+        {/* <div className="hamburger-menu">
+          <a href="#">
+            <GitHaburgerMenu/>
+          </a>
+        </div> */}
       </div>
     </div>
   );

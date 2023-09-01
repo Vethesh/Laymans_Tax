@@ -27,8 +27,9 @@ const Home = () => {
           />
         </div>
 
-        {/* <Cards/> */}
-      </div>
+
+          {/* <Cards/> */}
+        </div>
     </Layout>
   );
 };
