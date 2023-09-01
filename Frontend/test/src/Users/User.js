@@ -1,43 +1,28 @@
 import React from "react";
-import { Button, Menu, Typography, Avatar } from "antd";
-
-import {
-  HomeOutlined,
-  MoneyCollectOutlined,
-  BulbOutlined,
-  FundOutlined,
-  MenuOutlined,
-} from "@ant-design/icons";
-import { Link } from "react-router-dom";
 import "./style.css";
+import { Avatar } from "antd";
+// import { UserOutlined } from "@ant-design/icons";
 const User = () => {
   return (
     <div className="main-user">
       <div className="nav-container">
-        <div className="logo-container">
-          <Avatar src={"A"} size={"large"} />
-          <Typography.Title level={2} className="logo">
-            <Link to="/">Layman Tax</Link>
-            <div>hello [user_name]!!!</div>
-          </Typography.Title>
-          <Button className="menu-control-container"></Button>
+        <div className="user-info">
+          <div className="company-title">Laymans Tax</div>
+          <Avatar size="large" />
+          <div className="user-name">User Name</div>
         </div>
-        <Menu theme="dark">
-          <Menu.Item icon={<HomeOutlined />}>
-            <Link to="/">Home</Link>
-          </Menu.Item>
-          <Menu.Item icon={<FundOutlined />}>
-            <Link to="/cryptocurrency">Cryprocurrency</Link>
-          </Menu.Item>
-          <Menu.Item icon={<MoneyCollectOutlined />}>
-            <Link to="/exchanges">Exchanges</Link>
-          </Menu.Item>
-          <Menu.Item icon={<BulbOutlined />}>
-            <Link to="/news">News</Link>
-          </Menu.Item>
-        </Menu>
+        <div className="options">
+          <div className="option">Option 1</div>
+          <div className="option">Option 2</div>
+          <div className="option">Option 3</div>
+          <div className="option">Option 4</div>
+          <div className="option">Option 5</div>
+        </div>
+        <button className="logout-button">Logout</button>
       </div>
-      <div className="rest-body">show the cards</div>
+      <div className="body-container">
+        {/* Content for the right div (80%) */}
+      </div>
     </div>
   );
 };
