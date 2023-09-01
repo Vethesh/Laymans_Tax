@@ -1,12 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
+// import { GitHaburgerMenu } from "react-icons/gi";
 
 const Header = () => {
   return (
     <div className="header">
       <div className="logo">
         {/* <img src="#" alt="comapny-logo" /> */}
-        <h2>Laymans-Tax</h2>
+        <h2><span>L</span>ayman's
+          <span>T</span>ax
+        </h2>
       </div>
       <div className="navbar">
         <nav>
@@ -15,7 +18,7 @@ const Header = () => {
               <Link to={"/"}>Home</Link>
             </li>
             <li style={{ cursor: "pointer" }}>
-              <Link to={"/about"}> about us</Link>
+              <Link to={"/about"}> aboutus</Link>
             </li>
             <li style={{ cursor: "pointer" }}>
               <Link to={"/signup"}> signup</Link>
@@ -25,6 +28,11 @@ const Header = () => {
             </li>
           </ul>
         </nav>
+        {/* <div className="hamburger-menu">
+          <a href="#">
+            <GitHaburgerMenu/>
+          </a>
+        </div> */}
       </div>
     </div>
   );
