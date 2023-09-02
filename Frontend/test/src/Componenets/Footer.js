@@ -2,8 +2,6 @@ import React from "react";
 import "./footer.css";
 import Img from "../Images/logo.png";
 import { Link } from "react-router-dom";
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faenvelop } from '@fortawesome/free-solid-svg-icons';
 const Footer = () => {
   return (
     <footer className="main-f">
@@ -52,7 +50,7 @@ const Footer = () => {
             </li>
 
             <li>
-              <Link to={"/contact"}>Contacts</Link>
+              <Link to={"/contact"}>Contact us</Link>
             </li>
           </ul>
         </div>
@@ -75,8 +73,9 @@ const Footer = () => {
             <i class="fab fa-whatsapp"></i>
             <span>whatsapp</span>
             <br />
-            <i class="fab fa-youtube"></i>
+
             <Link to="https://www.youtube.com/channel/UC5h5sy092BUxtZZExww6jMQ">
+              <i class="fab fa-youtube"></i>
               <span>Youtube</span>
             </Link>
 

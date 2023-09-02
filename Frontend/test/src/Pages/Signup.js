@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Spinner from "../Componenets/Spinner";
 
 import axios from "axios";
+import Layout from "../Componenets/Layout";
 const Signup = () => {
   const [loading, setloading] = useState(false);
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ const Signup = () => {
     }
   }, [navigate]);
   return (
-    <>
+    <Layout>
       {loading && <Spinner />}
 
       <div className="register">
@@ -56,7 +57,7 @@ const Signup = () => {
           <Link to="/login">already registered?login here</Link>
         </Form>
       </div>
-    </>
+    </Layout>
   );
 };
 

@@ -17,19 +17,16 @@ const Home = () => {
             style={{
               display: "flex",
               justifyContent: "center",
-              margin:"5% 10%",
+              margin: "5% 10%",
               width: "300px",
               height: "auto",
-              borderRadius: "10px",
               filter: "drop-shadow(5px 5px 10px #555)",
-              boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
             }}
           />
         </div>
 
-
-          {/* <Cards/> */}
-        </div>
+        {/* <Cards/> */}
+      </div>
     </Layout>
   );
 };

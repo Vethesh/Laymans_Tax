@@ -1,17 +1,21 @@
 import React from "react";
 import { Button, Card } from "antd";
-const Cards = () => {
+const Cards = ({ cardDetail }) => {
   return (
-    <div>
+    
       <Card
-        title="Card title"
+        title={cardDetail.title}
         hoverable
         bordered={true}
-        style={{ width: 300, marginTop: 16, background: "black",color:"white" }}>
-        <p>Card content</p>
+        style={{
+          width: 300,
+          marginTop: 16,
+  
+        }}>
+        <p>{cardDetail.description}</p>
         <Button>Click here</Button>
       </Card>
-    </div>
+    
   );
 };
 

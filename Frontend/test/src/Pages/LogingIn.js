@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 // import Footer from "../components/layout/Footer";
 import axios from "axios";
 import Spinner from "../Componenets/Spinner";
+import Layout from "../Componenets/Layout";
 const LogingIn = () => {
   const [load, setload] = useState(false);
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ const LogingIn = () => {
     }
   }, [navigate]);
   return (
-    <>
+    <Layout>
       {load && <Spinner />}
 
       <div className="register">
@@ -52,7 +53,7 @@ const LogingIn = () => {
           <Link to="/signup">Dont have account yet?register here</Link>
         </Form>
       </div>
-    </>
+    </Layout>
   );
 };
 

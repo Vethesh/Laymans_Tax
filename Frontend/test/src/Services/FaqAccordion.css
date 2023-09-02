@@ -1,0 +1,32 @@
+/* FaqAccordion.css */
+
+.faq-accordion {
+    font-family: Arial, sans-serif;
+}
+
+.faq-item {
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    width: 50%;
+
+}
+
+.faq-question {
+    padding: 10px;
+    cursor: pointer;
+    /* background-color: #f7f7f7; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.faq-answer {
+    padding: 10px;
+    background-color: #fff;
+    display: none;
+}
+
+.faq-item.active .faq-answer {
+    display: block;
+}
