@@ -8,7 +8,9 @@ import LogingIn from "./Pages/LogingIn.js";
 import Bookeeping from "./Pages/Bookeeping";
 import Income from "./Pages/Income";
 import About from "./Pages/About";
+import Blog from "./Pages/Blog"
 import Contact from "./Pages/Contact";
+import KnowledgeConfer from "./Pages/KnowledgeConfer";
 import User from "./Users/User";
 function App() {
   return (
@@ -20,8 +22,10 @@ function App() {
         <Route path="/bookkeeping" element={<Bookeeping />} />
         <Route path="/income" element={<Income />} />
         <Route path="/about" element={<About />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/knowledge" element={<KnowledgeConfer />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/user/:id" element={<User/>}/>
+        <Route path="/user/:id" element={<User />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </div>

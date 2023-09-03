@@ -16,11 +16,14 @@ const Header = () => {
       <div className="navbar">
         <nav>
           <ul>
-            <li style={{ cursor: "pointer" ,textDecoration:"none"}}>
-              <Link to={"/"}>Home</Link>
-            </li>
             <li style={{ cursor: "pointer" }}>
               <Link to={"/about"}> aboutus</Link>
+            </li>
+            <li style={{ cursor: "pointer" }}>
+              <Link to={"/knowledge"}>knowlege confer</Link>
+            </li>
+            <li style={{ cursor: "pointer", textDecoration: "none" }}>
+              <Link to={"/blog"}>Blog</Link>
             </li>
             <li style={{ cursor: "pointer" }}>
               <Link to={"/signup"}> signup</Link>

@@ -6,7 +6,6 @@ import Gst from "../Services/Gst";
 import Bookkeeping from "../Services/Bookkeeping";
 import Income from "../Services/Income";
 import Pricing from "../Services/Pricing";
-import KnowledgeConfer from "../Services/KnowledgeConfer";
 import Profile from "../Users/Profile";
 import Task from "../Users/Task";
 // import { UserOutlined } from "@ant-design/icons";
@@ -16,7 +15,6 @@ const User = () => {
   const [book, setBook] = useState(false);
   const [gst, setGst] = useState(false);
   const [income, setIncome] = useState(false);
-  const [knowledge, setKnowledge] = useState(false);
   const [pricing, setPricing] = useState(false);
   return (
     <div className="main-user">
@@ -39,7 +37,7 @@ const User = () => {
               setBook(false);
               setGst(false);
               setIncome(false);
-              setKnowledge(false);
+
               setTask(false);
               setPricing(false);
             }}>
@@ -52,7 +50,7 @@ const User = () => {
               setBook(false);
               setGst(false);
               setIncome(false);
-              setKnowledge(false);
+
               setTask(true);
               setPricing(false);
             }}>
@@ -65,7 +63,7 @@ const User = () => {
               setBook(true);
               setGst(false);
               setIncome(false);
-              setKnowledge(false);
+
               setTask(false);
               setPricing(false);
             }}>
@@ -78,7 +76,7 @@ const User = () => {
               setBook(false);
               setGst(true);
               setIncome(false);
-              setKnowledge(false);
+
               setTask(false);
               setPricing(false);
             }}>
@@ -91,12 +89,13 @@ const User = () => {
               setBook(false);
               setGst(false);
               setIncome(true);
-              setKnowledge(false);
+
               setTask(false);
               setPricing(false);
             }}>
             Income
           </div>
+
           <div
             className="option"
             onClick={() => {
@@ -104,20 +103,7 @@ const User = () => {
               setBook(false);
               setGst(false);
               setIncome(false);
-              setKnowledge(true);
-              setTask(false);
-              setPricing(false);
-            }}>
-            Knowledge Confer
-          </div>
-          <div
-            className="option"
-            onClick={() => {
-              setProfile(false);
-              setBook(false);
-              setGst(false);
-              setIncome(false);
-              setKnowledge(false);
+
               setTask(false);
               setPricing(true);
             }}>
@@ -131,7 +117,7 @@ const User = () => {
           {book && <Bookkeeping />}
           {gst && <Gst />}
           {income && <Income />}
-          {knowledge && <KnowledgeConfer />}
+        
           {profile && <Profile />}
           {task && <Task />}
           {pricing && <Pricing />}

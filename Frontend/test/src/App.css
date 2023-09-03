@@ -32,8 +32,8 @@ body {
   background: linear-gradient(to right, #00093c, #2d0b00);
 
   height: 5rem;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
-    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  /* box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px; */
   /* padding: auto 10rem; */
   /* display: grid; */
   grid-template-columns: 10rem 1fr 2fr 1fr 10rem;
