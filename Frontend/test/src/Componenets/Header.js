@@ -17,13 +17,13 @@ const Header = () => {
         <nav>
           <ul>
             <li style={{ cursor: "pointer" }}>
-              <Link to={"/about"}> aboutus</Link>
-            </li>
-            <li style={{ cursor: "pointer" }}>
-              <Link to={"/knowledge"}>knowlege confer</Link>
+              <Link to={"/knowledge"}>FAQ</Link>
             </li>
             <li style={{ cursor: "pointer", textDecoration: "none" }}>
               <Link to={"/blog"}>Blog</Link>
+            </li>
+            <li style={{ cursor: "pointer" }}>
+              <Link to={"/pricing"}> Pricing</Link>
             </li>
             <li style={{ cursor: "pointer" }}>
               <Link to={"/signup"}> signup</Link>

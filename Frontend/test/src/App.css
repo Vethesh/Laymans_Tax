@@ -50,12 +50,12 @@ body {
 }
 
 .logo h2 {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 400;
   text-transform: uppercase;
-  background: -webkit-linear-gradient(#eee, rgb(69, 57, 248));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color:rgb(69, 57, 248);
+  /* background: -webkit-linear-gradient(#cac1c1, rgb(69, 57, 248)); */
+  /* -webkit-text-fill-color: transparent; */
 }
 
 .logo h2 span {
@@ -93,21 +93,102 @@ body {
   transition: 0.5s;
 }
 
+/* signup page */
+
+.register {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'poppins', sans-serif;
+}
 
 .register {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  width: 100vw;
+  min-height: 100vh;
+  min-width: 100vw;
+  background: rgba(199, 195, 195, 0);
 }
 
-.register Input {
+.register .input-box {
+  position: relative;
+  width: 380px;
+  /* height: 420px; */
+  background: linear-gradient(to right, #00093c, #2d0b00);
+  border-radius: 8px;
+  box-shadow: 2px 2px 3px;
+
+}
+
+
+.register .input-box {
+  position: relative;
+  inset: 4px;
+  padding: 50px 40px;
+  border-radius: 8px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+
+}
+
+/* .register Input {
   padding: 1rem;
   min-width: 25em;
   border-radius: 9px;
+} */
+
+
+.register,
+.input-box h2 {
+  color: #fff;
+  font-weight: 500;
+  text-align: center;
+  letter-spacing: 0.1em;
 }
 
+.register Form .input-box,
+.input {
+  position: relative;
+  width: 450px;
+  /* margin-top: 35px; */
+}
+
+.register From .input-box,
+.input {
+  position: relative;
+  width: 100%;
+  padding: 10px 10px 10px;
+  background: transparent;
+  outline: none;
+  border: none;
+  box-shadow: none;
+  color: #23242a;
+  font-size: 1em;
+  letter-spacing: 0.05em;
+  transition: 0.5s;
+  z-index: 10;
+}
+
+
+.register From .input-box,
+.input span {
+  position: absolute;
+  left: 0;
+  /* padding: 20px 10px 10px; */
+  pointer-events: none;
+  color: #fff;
+  font-size: 1em;
+  letter-spacing: 0.05em;
+  transition: 0.05s;
+}
+
+
+/* .register,.input-box ,.input:valid ~ span,
+.register, .input-box ,.input:focus ~ span{
+  color: #fff;
+} */
 .btn-primary {
   width: 100% !important;
   margin: auto;
@@ -145,3 +226,7 @@ body {
   }
 
 }
+/* a{
+  color: rgb(255, 232, 232);
+  background: linear-gradient(rgb(82, 8, 82),rgb(231, 32, 65) rgb(78, 4, 131));
+} */

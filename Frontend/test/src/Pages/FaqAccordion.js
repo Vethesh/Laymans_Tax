@@ -1,9 +1,6 @@
-import React, { useState } from "react";
-import "./FaqAccordion.css";
-
+import React from "react";
+import ControlledAccordions from "../Pages/Accordian";
 function FaqAccordion() {
-  const [activeIndex, setActiveIndex] = useState(null);
-
   const faqData = [
     {
       question: "What are the tax filing deadlines in my country?",
@@ -43,31 +40,13 @@ function FaqAccordion() {
       answer:
         "Depending on your country, there may be tax credits and incentives designed to support small businesses, such as research and development credits or grants.",
     },
-   
   ];
-
-  const toggleFaq = index => {
-    if (index === activeIndex) {
-      setActiveIndex(null);
-    } else {
-      setActiveIndex(index);
-    }
-  };
 
   return (
     <div className="faq-accordion">
-      {faqData.map((faq, index) => (
-        <div key={index} className="faq-item">
-          <div
-            className={`faq-question ${index === activeIndex ? "active" : ""}`}
-            onClick={() => toggleFaq(index)}>
-            {faq.question} {index === activeIndex ? "[-]" : "[+]"}
-          </div>
-          {index === activeIndex && (
-            <div className="faq-answer">{faq.answer}</div>
-          )}
-        </div>
-      ))}
+      {faqData.map(ele => {
+        return <ControlledAccordions data={ele} />;
+      })}
     </div>
   );
 }

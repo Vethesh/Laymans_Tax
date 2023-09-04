@@ -8,7 +8,8 @@ import LogingIn from "./Pages/LogingIn.js";
 import Bookeeping from "./Pages/Bookeeping";
 import Income from "./Pages/Income";
 import About from "./Pages/About";
-import Blog from "./Pages/Blog"
+import Blog from "./Pages/Blog";
+import Pricing from "./Pages/Pricing";
 import Contact from "./Pages/Contact";
 import KnowledgeConfer from "./Pages/KnowledgeConfer";
 import User from "./Users/User";
@@ -25,6 +26,7 @@ function App() {
         <Route path="/blog" element={<Blog />} />
         <Route path="/knowledge" element={<KnowledgeConfer />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/pricing" element={<Pricing />} />
         <Route path="/user/:id" element={<User />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>

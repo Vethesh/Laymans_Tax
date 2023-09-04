@@ -1,22 +1,34 @@
-import React from "react";
-import { Button, Card } from "antd";
-const Cards = ({ cardDetail }) => {
-  return (
-    
-      <Card
-        title={cardDetail.title}
-        hoverable
-        bordered={true}
-        style={{
-          width: 300,
-          marginTop: 16,
-  
-        }}>
-        <p>{cardDetail.description}</p>
-        <Button>Click here</Button>
-      </Card>
-    
-  );
-};
+import * as React from "react";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+// import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
+import { Button, CardActionArea, CardActions } from "@mui/material";
 
-export default Cards;
+export default function Cards({cardDetail}) {
+  return (
+    <Card sx={{ maxWidth: 300,boxShadow:"1px 1px 5px black"}}>
+      <CardActionArea>
+        {/* <CardMedia
+          component="img"
+          height="140"
+          image="/static/images/cards/contemplative-reptile.jpg"
+          alt="green iguana"
+        /> */}
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            {cardDetail.title}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {cardDetail.description}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+      <CardActions>
+        <Button size="large" color="primary">
+          clich here
+        </Button>
+      </CardActions>
+    </Card>
+  );
+}

@@ -1,36 +1,38 @@
 .main-user {
     display: flex;
-    height: 100vh;
     color: white;
 }
 
 .nav-container {
-    border: 1px solid white;
+    border-right: 1px solid white;
     height: 100vh;
-    width: 20vw;
-    background-color: rgb(6, 30, 45);
+    width: 25vw;
+    background-color: rgb(1, 16, 40);
 
 }
 
 .body-container {
     height: 100vh;
-    width: 80vw;
+    width: 75vw;
     color: black;
-    /* background-color: rgb(0, 21, 41); */
+    background-color: rgb(240, 245, 255);
 
 }
 /* In your CSS file (or a styled-components file) */
-.body-container {
-    display: flex;
-    justify-content: center;
-   
-}
 
-.parent {
+/* .parent {
  width: 100vw;
  height: 100vh;
+} */
+.btn{
+    width: 100%;
 }
-.parent .Gst {
-    padding: 20px;
-    text-align: center;
+
+.nav-container, .user-info{
+    display: grid;
+    grid-gap: 1rem;
+}
+.options Menu Menu.Item{
+    display: grid;
+    grid-gap: 3rem;
 }
