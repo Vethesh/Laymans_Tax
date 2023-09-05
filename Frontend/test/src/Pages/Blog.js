@@ -1,10 +1,12 @@
 import React from "react";
 import Layout from "../Componenets/Layout";
 
-const Blog = () => {
+const Blog = ({ showHeaderAndFooter = true }) => {
   return (
     <div>
-      <Layout>Blog page</Layout>
+      <Layout showHeaderAndFooter={showHeaderAndFooter}>
+        there is no blogs yet.....
+      </Layout>
     </div>
   );
 };

@@ -1,10 +1,11 @@
 .main-user {
     display: flex;
     color: white;
+    font-family:'poppins sans-serif';
 }
 
 .nav-container {
-    border-right: 1px solid white;
+    border-right: 2px solid white;
     height: 100vh;
     width: 25vw;
     background-color: rgb(1, 16, 40);
@@ -31,8 +32,4 @@
 .nav-container, .user-info{
     display: grid;
     grid-gap: 1rem;
-}
-.options Menu Menu.Item{
-    display: grid;
-    grid-gap: 3rem;
 }
