@@ -9,19 +9,36 @@ body {
   display: flex;
   width: 100vw;
   height: 100vh;
+ 
 }
 
 .main {
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
+
 }
 
-.main .bg img {
+/* .main .bg img {
   width: 100%;
   height: 100%;
   text-align: center;
   justify-content: center;
 
+} */
+
+.bg{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  /* margin-left: -6.5rem; */
+  width: 100vw;
+  height: auto;
+  filter: drop-shadow(5px 5px 10px #555);
+}
+
+.youtube{
+  width: 100%;
+  height: 100%;
 }
 
 .header {
@@ -100,6 +117,7 @@ body {
   padding: 0;
   box-sizing: border-box;
   font-family: 'poppins', sans-serif;
+  background: black;
 }
 
 .register {

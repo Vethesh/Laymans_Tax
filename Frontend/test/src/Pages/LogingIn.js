@@ -10,7 +10,7 @@ import Layout from "../Componenets/Layout";
 const LogingIn = () => {
   const [load, setload] = useState(false);
   const navigate = useNavigate();
-  const submitlhandler = async val => {
+  const submitlhandler = async (val) => {
     console.log(val);
     try {
       setload(true);
@@ -39,18 +39,26 @@ const LogingIn = () => {
 
       <div className="register">
         <Form layout="vertical" onFinish={submitlhandler}>
-          <h3>Login page</h3>
+          <div className="input-box">
+            <h2>Login page</h2>
 
-          <Form.Item label="email" name="email">
-            <Input type="email" />
-          </Form.Item>
-          <Form.Item label="password" name="password">
-            <Input type="password" />
-          </Form.Item>
-          <div className="d-flex">
-            <button className="btn btn-primary">Login</button>
+            <div className="input">
+              <Form.Item label={<span>Email</span>} name="email">
+                <Input type="email" rules={{ required: "email is required" }} />
+              </Form.Item>
+            </div>
+            <div className="input">
+              <Form.Item label={<span>Password</span>} password="password">
+                <Input type="passowrd" />
+              </Form.Item>
+            </div>
+            <div className="input">
+              <div className="d-flex align-center">
+                <button className="btn btn-primary">Register</button>
+              </div>
+              <Link to="/signup">Dont have account yet?register here</Link>
+              </div>
           </div>
-          <Link to="/signup">Dont have account yet?register here</Link>
         </Form>
       </div>
     </Layout>

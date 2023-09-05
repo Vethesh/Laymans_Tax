@@ -11,7 +11,7 @@ const Signup = () => {
   const [loading, setloading] = useState(false);
   const navigate = useNavigate();
 
-  const submithandler = async val => {
+  const submithandler = async (val) => {
     console.log(val);
     try {
       setloading(true);
