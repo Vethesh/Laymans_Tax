@@ -6,7 +6,7 @@ import { Menu } from "antd";
 import Gst from "../Services/Gst";
 import Bookkeeping from "../Services/Bookkeeping";
 import Income from "../Services/Income";
-import Profile from "../Users/Profile";
+import Profile from "../Pages/Profile";
 import Task from "../Users/Task";
 import { UserOutlined } from "@ant-design/icons";
 import TaskAltOutlinedIcon from "@mui/icons-material/TaskAltOutlined";
@@ -16,6 +16,7 @@ import CurrencyRupeeOutlinedIcon from "@mui/icons-material/CurrencyRupeeOutlined
 import LogoutIcon from "@mui/icons-material/Logout";
 import KeyboardBackspaceOutlinedIcon from "@mui/icons-material/KeyboardBackspaceOutlined";
 import { Avatar, Button } from "@mui/material";
+import MenuAppBar from "./Appbar";
 const User = () => {
   const [profile, setProfile] = useState(false);
   const [task, setTask] = useState(true);
@@ -30,11 +31,9 @@ const User = () => {
     <div className="main-user">
       <div className="nav-container">
         <div className="user-info">
-          <div className="company-title" style={{ textAlign: "center" }}>
-            Laymans Tax
-          </div>
           <div className="go-back">
             <Button
+              sx={{ marginTop: "1rem" }}
               startIcon={<KeyboardBackspaceOutlinedIcon />}
               onClick={handleback}>
               Home
@@ -142,6 +141,7 @@ const User = () => {
       </div>
       <div className="body-container">
         <div className="parent">
+          <MenuAppBar />
           {book && <Bookkeeping />}
           {gst && <Gst />}
           {income && <Income />}

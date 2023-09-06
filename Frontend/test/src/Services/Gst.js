@@ -35,11 +35,11 @@ const Gst = () => {
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: "1fr 1fr",
+        gridTemplateColumns: "repeat(3,1fr)",
         gridGap: "5rem",
-        marginLeft: "5%",
+        marginLeft: "3%",
         marginTop: "5%",
-        justifyContent: "space-around",
+      
       }}>
       {data.map(ele => {
         return <Cards key={ele.id} cardDetail={ele} />;

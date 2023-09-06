@@ -5,9 +5,15 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { Button, CardActionArea, CardActions } from "@mui/material";
 
-export default function Cards({cardDetail}) {
+export default function Cards({ cardDetail }) {
   return (
-    <Card sx={{ maxWidth: 300,boxShadow:"1px 1px 5px black"}}>
+    <Card
+      sx={{
+        maxWidth: 300,
+        boxShadow: "1px 1px 5px black",
+        bgcolor: "black",
+        color: "white",
+      }}>
       <CardActionArea>
         {/* <CardMedia
           component="img"
@@ -19,7 +25,10 @@ export default function Cards({cardDetail}) {
           <Typography gutterBottom variant="h5" component="div">
             {cardDetail.title}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography
+            variant="body2"
+            color="white"
+            sx={{ letterSpacing: "1px" }}>
             {cardDetail.description}
           </Typography>
         </CardContent>

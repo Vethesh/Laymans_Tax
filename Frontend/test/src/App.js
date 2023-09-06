@@ -13,6 +13,7 @@ import Pricing from "./Pages/Pricing";
 import Contact from "./Pages/Contact";
 import KnowledgeConfer from "./Pages/KnowledgeConfer";
 import User from "./Users/User";
+import Admin from "./Admin/Admin";
 function App() {
   return (
     <div className="App">
@@ -28,6 +29,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/user/:id" element={<User />} />
+        <Route path="/user/admin/:id" element={<Admin />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </div>

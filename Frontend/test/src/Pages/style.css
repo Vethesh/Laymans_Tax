@@ -1,0 +1,23 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.user-profile {
+ margin-top: 10%;
+display: flex;
+justify-content: center;
+}
+
+.user-profile Input {
+    padding: 1rem;
+    min-width: 25em;
+    border-radius: 9px;
+}
