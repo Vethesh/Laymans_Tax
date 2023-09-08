@@ -3,7 +3,7 @@ import Layout from "../Componenets/Layout";
 
 const Blog = ({ showHeaderAndFooter = true }) => {
   return (
-    <div>
+    <div >
       <Layout showHeaderAndFooter={showHeaderAndFooter}>
         there is no blogs yet.....
       </Layout>

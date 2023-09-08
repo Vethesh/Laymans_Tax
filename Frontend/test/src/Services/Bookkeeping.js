@@ -1,7 +1,12 @@
 import React from "react";
+import Bookcard from "../Componenets/Bookcard";
 
 const Bookkeeping = () => {
-  return <div>book</div>;
+  return (
+    <div >
+      <Bookcard />
+    </div>
+  );
 };
 
 export default Bookkeeping;

@@ -5,17 +5,15 @@ import { useNavigate } from "react-router-dom";
 import "./style.css";
 import Spinner from "../Componenets/Spinner";
 
-// import axios from "axios";
-
 const Profile = () => {
   const [loading, setloading] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    password: "",
+    name: "abc",
+    email: "abc@gmail.com",
+    phone: "1928736455",
+    password: "*****",
   });
-  const [isEditing, setIsEditing] = useState(true); // Initially, enable editing
+  const [isEditing, setIsEditing] = useState(false);
 
   const navigate = useNavigate();
 
@@ -25,7 +23,9 @@ const Profile = () => {
       setloading(true);
       // Simulate an API request to update user data
       // Replace this with your actual API request
-      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      isEditing(true);
+      await new Promise(resolve => setTimeout(resolve, 8000));
       message.success("Profile updated successfully");
       setloading(false);
       setIsEditing(false); // Disable editing after successful update
@@ -64,7 +64,7 @@ const Profile = () => {
               name="name"
               value={formData.name}
               onChange={handleInputChange}
-              disabled={!isEditing}
+              disabled={!isEditing} // Disable input when not editing
             />
           </Form.Item>
 
@@ -74,17 +74,7 @@ const Profile = () => {
               name="email"
               value={formData.email}
               onChange={handleInputChange}
-              disabled={!isEditing}
-              rules={[
-                {
-                  type: "email",
-                  message: "Please enter a valid email address",
-                },
-                {
-                  required: true,
-                  message: "Email is required",
-                },
-              ]}
+              disabled={!isEditing} // Disable input when not editing
             />
           </Form.Item>
 
@@ -94,7 +84,7 @@ const Profile = () => {
               name="phone"
               value={formData.phone}
               onChange={handleInputChange}
-              disabled={!isEditing}
+              disabled={!isEditing} // Disable input when not editing
             />
           </Form.Item>
 
@@ -104,20 +94,24 @@ const Profile = () => {
               name="password"
               value={formData.password}
               onChange={handleInputChange}
-              disabled={!isEditing}
+              disabled={!isEditing} // Disable input when not editing
             />
           </Form.Item>
 
           <div className="input">
             <div className="d-flex align-center">
               {isEditing ? (
-                <button className="btn btn-primary" onClick={submithandler}>
+                <button
+                  className="btn btn-primary"
+                  type="submit"
+                  onClick={submithandler}>
                   Update
                 </button>
               ) : (
                 <button
                   className="btn btn-primary"
-                  onClick={() => setIsEditing(true)}>
+                  onClick={() => setIsEditing(true)} // Enable editing
+                >
                   Edit Profile
                 </button>
               )}

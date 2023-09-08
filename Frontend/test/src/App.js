@@ -14,9 +14,11 @@ import Contact from "./Pages/Contact";
 import KnowledgeConfer from "./Pages/KnowledgeConfer";
 import User from "./Users/User";
 import Admin from "./Admin/Admin";
+import FormData from "./Componenets/FormData";
+import Gst from "./Services/Gst";
 function App() {
   return (
-    <div className="App">
+    <div style={{ width: "100%", height: "100%" }}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
@@ -27,8 +29,10 @@ function App() {
         <Route path="/blog" element={<Blog />} />
         <Route path="/knowledge" element={<KnowledgeConfer />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/pricing" element={<Pricing />} />
+        <Route path="/pricing" element={<Pricing />} />{" "}
+        <Route path="/modal" element={<FormData />} />
         <Route path="/user/:id" element={<User />} />
+        <Route path="/gst" element={<Gst />} />
         <Route path="/user/admin/:id" element={<Admin />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
