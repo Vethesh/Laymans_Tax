@@ -11,11 +11,11 @@ const Signup = () => {
   const [loading, setloading] = useState(false);
   const navigate = useNavigate();
 
-  const submithandler = async (val) => {
+  const submithandler = async val => {
     console.log(val);
     try {
       setloading(true);
-      await axios.post("/users/register", val);
+      await axios.post("http://localhost:3002/user/register", val);
       message.success("Registration successfull");
       setloading(false);
       navigate("/login");
@@ -50,15 +50,16 @@ const Signup = () => {
               </Form.Item>
             </div>
             <div className="input">
-              <Form.Item label={<span>Phone</span>} name="Phone">
-                <Input type="Phoneno" />
+              <Form.Item label={<span>Password</span>} name="password">
+                <Input type="password" />
               </Form.Item>
             </div>
             <div className="input">
-              <Form.Item label={<span>Password</span>} password="password">
-                <Input type="passowrd" />
+              <Form.Item label={<span>Phone</span>} name="phone">
+                <Input type="Phoneno" />
               </Form.Item>
             </div>
+
             <div className="input">
               <div className="d-flex align-center">
                 <button className="btn btn-primary">Register</button>

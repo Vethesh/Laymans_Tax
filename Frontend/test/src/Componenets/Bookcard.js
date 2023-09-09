@@ -60,6 +60,7 @@ function Bookcard() {
             boxShadow: "1px 1px 5px black",
             bgcolor: "black",
             color: "white",
+            borderRadius: "1rem",
           }}>
           <CardContent sx={{ color: "white", letterSpacing: "2px" }}>
             <Typography variant="h5" component="div">

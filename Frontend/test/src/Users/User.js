@@ -16,6 +16,7 @@ import CurrencyRupeeOutlinedIcon from "@mui/icons-material/CurrencyRupeeOutlined
 import LogoutIcon from "@mui/icons-material/Logout";
 import KeyboardBackspaceOutlinedIcon from "@mui/icons-material/KeyboardBackspaceOutlined";
 import { Avatar, Button } from "@mui/material";
+// import { useParams } from "react-router-dom";
 import MenuAppBar from "./Appbar";
 const User = () => {
   const [profile, setProfile] = useState(false);
@@ -24,6 +25,9 @@ const User = () => {
   const [gst, setGst] = useState(false);
   const [income, setIncome] = useState(false);
   const navigate = useNavigate();
+  // const { userId } = useParams();
+  const data = localStorage.getItem("user");
+  const mail = JSON.parse(data);
   const handleback = () => {
     navigate("/");
   };
@@ -47,16 +51,17 @@ const User = () => {
                 width: "3.5rem",
                 height: "3.5rem",
               }}>
-              N
+              {mail.email[0].toUpperCase()}
             </Avatar>
           </div>
           <div className="user-name" style={{ textAlign: "center" }}>
-            User Name
+            Hello {mail.email}
+            {console.log(mail.email)}
           </div>
         </div>
         <div className="options">
           <Menu
-            theme={"dark"}
+            theme="dark"
             style={{
               display: "grid",
               gridGap: "1rem",

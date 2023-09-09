@@ -19,6 +19,7 @@ export default function Cards({ cardDetail }) {
         boxShadow: "1px 1px 5px black",
         bgcolor: "black",
         color: "white",
+        borderRadius: "1rem",
       }}>
       <CardContent sx={{ color: "white", letterSpacing: "2px" }}>
         <Typography gutterBottom variant="h5" component="div">
@@ -33,8 +34,8 @@ export default function Cards({ cardDetail }) {
           Click here
         </Button>
         <Button size="large" color="success">
-          {cardDetail.amount}
           <CurrencyRupeeOutlinedIcon />
+          {cardDetail.amount}
         </Button>
       </CardActions>
     </Card>
