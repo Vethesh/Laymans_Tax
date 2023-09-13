@@ -15,22 +15,25 @@ const Contact = () => {
     console.log(val);
     try {
       setloading(true);
-      await axios.post("/users/register", val);
-      message.success("Registration successfull");
+      const res = await axios.post("http://localhost:3002/contact", val);
       setloading(false);
-      navigate("/login");
+      if (res.status === 200) {
+        message.success("updated successfull");
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
+      }
     } catch (error) {
       setloading(false);
       message.error("Invalid credentials");
     }
   };
-  
 
-  useEffect(() => {
-    if (localStorage.getItem("user")) {
-      navigate("/");
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   if (localStorage.getItem("user")) {
+  //     navigate("/");
+  //   }
+  // }, [navigate]);
   return (
     <Layout>
       {loading && <Spinner />}
@@ -44,8 +47,11 @@ const Contact = () => {
           <Form.Item label="email" name="email">
             <Input type="email" />
           </Form.Item>
-          <Form.Item label="PhoneNo" name="phoneno">
+          <Form.Item label="PhoneNo" name="phone">
             <Input type="number" />
+          </Form.Item>
+          <Form.Item label="Date" name="date">
+            <Input type="date" />
           </Form.Item>
           <Form.Item label="Queries" name="query">
             <Input type="text" />

@@ -1,125 +1,129 @@
 import React, { useEffect, useState } from "react";
-import { Form, message } from "antd";
-import Input from "antd/es/input/Input";
-import { useNavigate } from "react-router-dom";
-import "./style.css";
+import { Form, Input, Button, message, Space } from "antd";
+import {
+  UserOutlined,
+  MailOutlined,
+  PhoneOutlined,
+  EditOutlined,
+} from "@ant-design/icons";
+import axios from "axios";
+import "./profile.css";
 import Spinner from "../Componenets/Spinner";
 
 const Profile = () => {
-  const [loading, setloading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    name: "abc",
-    email: "abc@gmail.com",
-    phone: "1928736455",
-    password: "*****",
+    name: "",
+    email: "",
+    phone: "",
   });
   const [isEditing, setIsEditing] = useState(false);
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    const data = localStorage.getItem("user");
+    const getid = JSON.parse(data);
+    const userId = getid?.id;
 
-  const submithandler = async () => {
-    console.log(formData);
+    if (userId) {
+      axios
+        .get(`http://localhost:3002/user/${userId}`)
+        .then((response) => {
+          const Data = response.data.user;
+        
+          console.log(typeof Data)
+          setFormData(
+           {name:Data.name,email:Data.email,phone:Data.phone}
+          );
+          console.log(formData)
+        })
+        .catch((error) => {
+          console.error(error);
+          message.error("Failed to fetch user data");
+        });
+    }
+  }, []);
+
+  const submitHandler = async () => {
     try {
-      setloading(true);
-      // Simulate an API request to update user data
-      // Replace this with your actual API request
-
-      isEditing(true);
+      setLoading(true);
       await new Promise(resolve => setTimeout(resolve, 8000));
+      // Perform the update operation here
+      // For demonstration purposes, we'll just show a success message
       message.success("Profile updated successfully");
-      setloading(false);
-      setIsEditing(false); // Disable editing after successful update
+      setLoading(false);
     } catch (error) {
-      setloading(false);
+      setLoading(false);
       message.error("Invalid credentials");
     }
   };
 
-  useEffect(() => {
-    if (localStorage.getItem("user")) {
-      navigate("/");
-    }
-  }, [navigate]);
-
-  // Function to handle changes in form fields
-  const handleInputChange = e => {
-    const { name, value } = e.target;
-    setFormData(prevData => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
   return (
-    <>
+    <div className="user-profile">
       {loading && <Spinner />}
 
-      <div className="user-profile">
-        <Form layout="vertical" onFinish={submithandler}>
-          <h2>user profile page</h2>
+      <h2>User Profile Page</h2>
 
-          <Form.Item label="Name" name="name">
-            <Input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleInputChange}
-              disabled={!isEditing} // Disable input when not editing
-            />
-          </Form.Item>
+      <Form
+        layout="vertical"
+        onFinish={submitHandler}
+        initialValues={formData} // Initialize form with user data
+      >
+        <Form.Item label="Name" name="name">
+          <Input
+            prefix={<UserOutlined />}
+            type="text"
+            name="name"
+            disabled={!isEditing}
+            defaultValue={formData.name} // Add value prop to prefill the input field
+          />
+        </Form.Item>
 
-          <Form.Item label="Email" name="email">
-            <Input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              disabled={!isEditing} // Disable input when not editing
-            />
-          </Form.Item>
+        <Form.Item label="Email" name="email">
+          <Input
+            prefix={<MailOutlined />}
+            type="email"
+            name="email"
+            disabled={!isEditing}
+            defaultValue={formData.email} // Add value prop to prefill the input field
+          />
+        </Form.Item>
 
-          <Form.Item label="Phone" name="phone">
-            <Input
-              type="tel"
-              name="phone"
-              value={formData.phone}
-              onChange={handleInputChange}
-              disabled={!isEditing} // Disable input when not editing
-            />
-          </Form.Item>
+        <Form.Item label="Phone" name="phone">
+          <Input
+            prefix={<PhoneOutlined />}
+            type="tel"
+            name="phone"
+            disabled={!isEditing}
+            defaultValue={formData.phone} // Add value prop to prefill the input field
+          />
+        </Form.Item>
 
-          <Form.Item label="Password" name="password">
-            <Input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleInputChange}
-              disabled={!isEditing} // Disable input when not editing
-            />
-          </Form.Item>
-
-          <div className="input">
-            <div className="d-flex align-center">
-              {isEditing ? (
-                <button
-                  className="btn btn-primary"
-                  type="submit"
-                  onClick={submithandler}>
-                  Update
-                </button>
-              ) : (
-                <button
-                  className="btn btn-primary"
-                  onClick={() => setIsEditing(true)} // Enable editing
-                >
-                  Edit Profile
-                </button>
-              )}
-            </div>
-          </div>
-        </Form>
-      </div>
-    </>
+        <Space>
+          {isEditing ? (
+            <>
+              <Button
+                type="primary"
+                htmlType="submit"
+                style={{ marginRight: 16 }}>
+                Save
+              </Button>
+              <Button type="default" onClick={() => setIsEditing(false)}>
+                Cancel
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                type="primary"
+                icon={<EditOutlined />}
+                onClick={() => setIsEditing(true)}>
+                Edit Profile
+              </Button>
+            </>
+          )}
+        </Space>
+      </Form>
+    </div>
   );
 };
 

@@ -16,17 +16,18 @@ const Home = () => {
           <img
             src={Img}
             alt="bg"
-            style={{
-            //   display: "flex",
-            //   justifyContent: "center",
-            // margin: "5% 10%",
-            //    width: "300px",
-          
-            }}
+            style={
+              {
+                //   display: "flex",
+                //   justifyContent: "center",
+                // margin: "5% 10%",
+                //    width: "300px",
+              }
+            }
           />
 
           <div className="youtube">
-            <Youtubecard/>
+            <Youtubecard />
           </div>
         </div>
 

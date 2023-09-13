@@ -1,6 +1,5 @@
 {
   "name": "test",
-  
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -25,6 +24,7 @@
     "popper.js": "^1.16.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.6.0",
+    "react-datepicker": "^4.17.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",
     "react-router-dom": "^6.4.3",

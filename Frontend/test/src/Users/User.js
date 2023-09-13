@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./style.css";
-import { useNavigate } from "react-router-dom";
 import { Menu } from "antd";
 
 import Gst from "../Services/Gst";
@@ -14,20 +13,21 @@ import ImportContactsOutlinedIcon from "@mui/icons-material/ImportContactsOutlin
 import AccountBalanceOutlinedIcon from "@mui/icons-material/AccountBalanceOutlined";
 import CurrencyRupeeOutlinedIcon from "@mui/icons-material/CurrencyRupeeOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
-import KeyboardBackspaceOutlinedIcon from "@mui/icons-material/KeyboardBackspaceOutlined";
 import { Avatar, Button } from "@mui/material";
-// import { useParams } from "react-router-dom";
 import MenuAppBar from "./Appbar";
+import { useNavigate } from "react-router-dom";
+import KeyboardBackspaceOutlinedIcon from "@mui/icons-material/KeyboardBackspaceOutlined";
 const User = () => {
-  const [profile, setProfile] = useState(false);
-  const [task, setTask] = useState(true);
-  const [book, setBook] = useState(false);
-  const [gst, setGst] = useState(false);
-  const [income, setIncome] = useState(false);
   const navigate = useNavigate();
-  // const { userId } = useParams();
+  const [activeSection, setActiveSection] = useState("task"); // Default active section
+  const [showProfile, setShowProfile] = useState(false); // Control whether to show the profile section
   const data = localStorage.getItem("user");
   const mail = JSON.parse(data);
+  const handlelogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("formdata");
+    navigate("/login");
+  };
   const handleback = () => {
     navigate("/");
   };
@@ -37,7 +37,7 @@ const User = () => {
         <div className="user-info">
           <div className="go-back">
             <Button
-              sx={{ marginTop: "1rem" }}
+              sx={{ marginTop: "3%" }}
               startIcon={<KeyboardBackspaceOutlinedIcon />}
               onClick={handleback}>
               Home
@@ -46,7 +46,7 @@ const User = () => {
           <div className="avatar">
             <Avatar
               sx={{
-                bgcolor: "orange ",
+                bgcolor: "orange",
                 marginLeft: "40%",
                 width: "3.5rem",
                 height: "3.5rem",
@@ -56,7 +56,6 @@ const User = () => {
           </div>
           <div className="user-name" style={{ textAlign: "center" }}>
             Hello {mail.email}
-            {console.log(mail.email)}
           </div>
         </div>
         <div className="options">
@@ -70,62 +69,46 @@ const User = () => {
             }}>
             <Menu.Item
               icon={<UserOutlined />}
+              key="profile"
               onClick={() => {
-                setProfile(true);
-                setBook(false);
-                setGst(false);
-                setIncome(false);
-
-                setTask(false);
+                setActiveSection("profile");
+                setShowProfile(true);
               }}>
               My profile
             </Menu.Item>
             <Menu.Item
               icon={<TaskAltOutlinedIcon />}
+              key="task"
               onClick={() => {
-                setProfile(false);
-                setBook(false);
-                setGst(false);
-                setIncome(false);
-
-                setTask(true);
+                setActiveSection("task");
+                setShowProfile(false); // Close the profile section
               }}>
               My task
             </Menu.Item>
             <Menu.Item
               icon={<ImportContactsOutlinedIcon />}
+              key="book"
               onClick={() => {
-                setProfile(false);
-                setBook(true);
-                setGst(false);
-                setIncome(false);
-
-                setTask(false);
+                setActiveSection("book");
+                setShowProfile(false); // Close the profile section
               }}>
               Book keeping
             </Menu.Item>
-
             <Menu.Item
               icon={<AccountBalanceOutlinedIcon />}
+              key="gst"
               onClick={() => {
-                setProfile(false);
-                setBook(false);
-                setGst(true);
-                setIncome(false);
-
-                setTask(false);
+                setActiveSection("gst");
+                setShowProfile(false); // Close the profile section
               }}>
               Gst
             </Menu.Item>
             <Menu.Item
               icon={<CurrencyRupeeOutlinedIcon />}
+              key="income"
               onClick={() => {
-                setProfile(false);
-                setBook(false);
-                setGst(false);
-                setIncome(true);
-
-                setTask(false);
+                setActiveSection("income");
+                setShowProfile(false); // Close the profile section
               }}>
               Income
             </Menu.Item>
@@ -133,6 +116,7 @@ const User = () => {
         </div>
         <div className="btn">
           <Button
+            onClick={handlelogout}
             endIcon={<LogoutIcon />}
             style={{
               width: "60%",
@@ -147,12 +131,11 @@ const User = () => {
       <div className="body-container">
         <div className="parent">
           <MenuAppBar />
-          {book && <Bookkeeping />}
-          {gst && <Gst />}
-          {income && <Income />}
-
-          {profile && <Profile />}
-          {task && <Task />}
+          {showProfile && <Profile />}
+          {activeSection === "book" && <Bookkeeping />}
+          {activeSection === "gst" && <Gst />}
+          {activeSection === "income" && <Income />}
+          {activeSection === "task" && <Task />}
         </div>
       </div>
     </div>

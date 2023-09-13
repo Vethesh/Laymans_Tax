@@ -1,0 +1,55 @@
+/* profile.css */
+
+.user-profile {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.user-profile h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.user-profile .ant-form-item-label {
+  text-align: left;
+}
+
+.user-profile .ant-form-item {
+  margin-bottom: 16px;
+}
+
+.user-profile .ant-input-prefix {
+  color: rgba(0, 0, 0, 0.25);
+}
+
+.user-profile .ant-btn {
+  margin-right: 16px;
+}
+
+.user-profile .ant-space {
+  display: flex;
+  justify-content: space-between;
+}
+
+.user-profile .ant-space .ant-btn {
+  flex: 1;
+}
+
+.user-profile .ant-space .ant-btn:last-child {
+  margin-right: 0;
+}
+
+.user-profile .ant-btn-primary {
+  background-color: #1890ff;
+  border-color: #1890ff;
+}
+
+.user-profile .ant-btn-primary:hover {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
+}

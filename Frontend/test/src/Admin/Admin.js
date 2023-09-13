@@ -30,13 +30,21 @@ const Admin = () => {
   const handleback = () => {
     navigate("/");
   };
+  const data = localStorage.getItem("user");
+  const mail = JSON.parse(data);
+  const handlelogout = () => {
+    localStorage.removeItem("user");
+     localStorage.removeItem("formdata");
+    localStorage.removeItem("adminLoggedIn");
+    navigate("/login");
+  };
   return (
     <div className="main-user">
       <div className="nav-container">
         <div className="user-info">
           <div className="go-back">
             <Button
-            sx={{marginTop:"3%"}}
+              sx={{ marginTop: "3%" }}
               startIcon={<KeyboardBackspaceOutlinedIcon />}
               onClick={handleback}>
               Home
@@ -49,12 +57,13 @@ const Admin = () => {
                 marginLeft: "40%",
                 width: "3.5rem",
                 height: "3.5rem",
+                color: "white",
               }}>
-              A
+              {mail.email[0].toUpperCase()}
             </Avatar>
           </div>
           <div className="user-name" style={{ textAlign: "center" }}>
-            User Name
+            Hello {mail.type} !!
           </div>
         </div>
         <div className="options">
@@ -143,6 +152,7 @@ const Admin = () => {
         </div>
         <div className="btn">
           <Button
+            onClick={handlelogout}
             endIcon={<LogoutIcon />}
             style={{
               width: "60%",

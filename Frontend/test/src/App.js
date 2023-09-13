@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import Signup from "./Pages/Signup";
 import Home from "./Pages/Home";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import PageNotFound from "./Pages/PageNotFound";
 import LogingIn from "./Pages/LogingIn.js";
 import Bookeeping from "./Pages/Bookeeping";
@@ -16,6 +16,7 @@ import User from "./Users/User";
 import Admin from "./Admin/Admin";
 import FormData from "./Componenets/FormData";
 import Gst from "./Services/Gst";
+import Forgotpassword from "./Pages/Forgotpassword";
 function App() {
   return (
     <div style={{ width: "100%", height: "100%" }}>
@@ -31,13 +32,27 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/pricing" element={<Pricing />} />{" "}
         <Route path="/modal" element={<FormData />} />
-        <Route path="/user/:id" element={<User />} />
+        <Route path="/forgot" element={<Forgotpassword />} />
+        <Route path="/user/:id" element={<Wrap><User /></Wrap>} />
         <Route path="/gst" element={<Gst />} />
-        <Route path="/user/admin/:id" element={<Admin />} />
+        <Route path="/admin/:id" element={<Admin />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </div>
   );
 }
 
+export function Wrap({ child }) {
+  const data = localStorage.getItem("user");
+  const a = JSON.parse(data);
+  if (data) {
+    if (a.type === "admin") {
+      return <Navigate to={`/admin/${a.id}`} />;
+    } else {
+      return <Navigate to={`/user/${a.id}`} />;
+    }
+  } else {
+    return <Navigate to={"/"} />;
+  }
+}
 export default App;

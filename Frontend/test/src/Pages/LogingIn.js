@@ -6,59 +6,79 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../Componenets/Spinner";
 import Layout from "../Componenets/Layout";
+
 const LogingIn = () => {
-  const [load, setload] = useState(false);
+  const [load, setLoad] = useState(false);
   const navigate = useNavigate();
-  const submitlhandler = async val => {
-    console.log(val);
+
+  const submitHandler = async values => {
     try {
-      setload(true);
+      setLoad(true);
       const { data } = await axios.post(
         "http://localhost:3002/user/login",
-        val
+        values
       );
-      setload(false);
-      message.success("Login successfull");
+      console.log(data);
+      setLoad(false);
 
-      localStorage.setItem(
-        "user",
-        JSON.stringify({ ...data, password: "" })
-      );
-      navigate(`/user/${data.id}`);
+      if (data.type === "admin") {
+        // Check if an admin is already logged in
+        const adminLoggedIn = localStorage.getItem("adminLoggedIn");
+
+        if (!adminLoggedIn) {
+          // If no admin is logged in, set the adminLoggedIn flag and proceed
+          localStorage.setItem("adminLoggedIn", "true");
+          message.success("Login successful");
+          localStorage.setItem(
+            "user",
+            JSON.stringify({ ...data, password: "" })
+          );
+          navigate(`/admin/${data.id}`);
+        } else {
+          // If an admin is already logged in, show an error message
+          message.error("Admin is already logged in.");
+        }
+      } else {
+        // Redirect to the user's page for non-admin users
+        message.success("Login successful");
+        localStorage.setItem("user", JSON.stringify({ ...data, password: "" }));
+        navigate(`/user/${data.id}`);
+      }
     } catch (error) {
-      setload(false);
-      message.error("something went wrong");
+      setLoad(false);
+      message.error("Wrong username or password. Please reset your password if needed.");
     }
   };
-  useEffect(() => {
-    if (localStorage.getItem("user")) {
-      navigate("/");
-    }
-  }, [navigate]);
+
   return (
     <Layout>
       {load && <Spinner />}
 
       <div className="register">
-        <Form layout="vertical" onFinish={submitlhandler}>
+        <Form layout="vertical" onFinish={submitHandler}>
           <div className="input-box">
             <h2>Login page</h2>
 
             <div className="input">
               <Form.Item label={<span>Email</span>} name="email">
-                <Input type="email" rules={{ required: "email is required" }} />
+                <Input
+                  type="email"
+                  rules={[{ required: true, message: "Email is required" }]}
+                />
               </Form.Item>
             </div>
             <div className="input">
               <Form.Item label={<span>Password</span>} name="password">
-                <Input type="passowrd" />
+                <Input type="password" />
               </Form.Item>
             </div>
             <div className="input">
               <div className="d-flex align-center">
                 <button className="btn btn-primary">Login</button>
               </div>
-              <Link to="/signup">Dont have account yet?register here</Link>
+              <Link to="/signup">Don't have an account yet? Register here</Link>
+              <br />
+              <Link to="/forgot">Forgot Password?</Link> {/* Added Forgot Password link */}
             </div>
           </div>
         </Form>
