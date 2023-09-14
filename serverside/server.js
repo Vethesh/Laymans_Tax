@@ -285,12 +285,21 @@ app.get("/getblog", (req, res) => {
 const multer = require("multer");
 const upload = multer();
 
-app.post("/upload", upload.array("files", 10), (req, res) => {
+app.post("/upload", upload.array("files", 20), (req, res) => {
   const files = req.files;
-  const { name, email, phone, service } = req.body;
+  const { id,name, email, phone, date, service } = req.body;
 
   // Check if required fields are present
-  if (!name || !email || !phone || !service || !files || files.length === 0) {
+  if (
+    !id||
+    !name ||
+    !email ||
+    !phone ||
+    !date ||
+    !service ||
+    !files ||
+    files.length === 0
+  ) {
     return res.status(400).send("Missing required fields or files.");
   }
 
@@ -300,46 +309,29 @@ app.post("/upload", upload.array("files", 10), (req, res) => {
     file_data: file.buffer,
   }));
 
-  // Save file metadata and data to the transaction table
   db.query(
-    "INSERT INTO transaction (name, email, phone, date) VALUES (?, ?, ?, ?)",
-    [name, email, phone, date],
+    "INSERT INTO transaction (id,name, email, phone, date, service, file) VALUES (?,?, ?, ?, ?, ?, ?)",
+    [id,name, email, phone, date, service, JSON.stringify(fileData)],
     (err, result) => {
       if (err) {
         console.error(err);
         return res.status(500).send("Transaction creation failed.");
       }
 
-      const transactionId = result.insertId;
+      // const transactionId = result.insertId;
 
-      // Now, associate the uploaded files with the transaction
-      const fileInsertQueries = fileData.map(data => ({
-        transaction_id: transactionId,
-        file_name: data.file_name,
-        file_type: data.file_type,
-        file_data: data.file_data,
-      }));
-
-      db.query(
-        "INSERT INTO transaction_files (transaction_id, file_name, file_type, file_data) VALUES ?",
-        [fileInsertQueries.map(data => Object.values(data))],
-        (fileInsertErr, fileInsertResult) => {
-          if (fileInsertErr) {
-            console.error(fileInsertErr);
-            return res.status(500).send("File upload failed.");
-          }
-          res.send("Files and transaction data uploaded successfully.");
-        }
-      );
+      res.send("Transaction data and files uploaded successfully.");
     }
   );
 });
+
+
 //contact page
 
 app.post("/contact", (req, res) => {
   const { name, email, phone, date, query } = req.body;
   console.log(req.body);
-  if (!name || !email || !phone ||!date|| !query) {
+  if (!name || !email || !phone || !date || !query) {
     return res.status(400).send("All fields are required.");
   }
 

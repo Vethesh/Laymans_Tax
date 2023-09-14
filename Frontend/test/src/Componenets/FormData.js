@@ -1,36 +1,26 @@
-import React, { useState } from "react";
-import { Form, Button, Input, message, Upload } from "antd";
-import { Alert, AlertTitle } from "@mui/material";
-import { InboxOutlined } from "@ant-design/icons";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  Button,
+  TextField,
+  Typography,
+  Container,
+  Grid,
+  Paper,
+  MenuItem,
+} from "@mui/material";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { useDropzone } from "react-dropzone";
 import axios from "axios";
-import "./FormData.css"; // Import a CSS file for styling
-import DatePicker from "react-datepicker";
-import Select from "react-select"; // Import Select component from react-select
-import "react-datepicker/dist/react-datepicker.css";
-// import "react-select/dist/react-select-css";
 
-const { Dragger } = Upload;
-
-const props = {
-  name: "file",
-  multiple: true,
-  action: "http://localhost:3002/upload",
-  onChange(info) {
-    const { status } = info.file;
-    if (status !== "uploading") {
-      console.log(info.file, info.fileList);
-    }
-    if (status === "done") {
-      message.success(`${info.file.name} file uploaded successfully.`);
-    } else if (status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  },
-  onDrop(e) {
-    console.log("Dropped files", e.dataTransfer.files);
-  },
+const initialFormData = {
+  id:"",
+  name: "",
+  email: "",
+  phone: "",
+  date: new Date().toISOString().substring(0, 10),
+  service: "", // Add service field to the initial form data
 };
-
 const options = [
   { value: "GSTR-1", label: "GSTR-1" },
   { value: "GSTR-3B", label: "GSTR-3B" },
@@ -46,114 +36,205 @@ const options = [
   { value: "LLP", label: "LLP" },
   { value: "Company", label: "Company" },
 ];
-
-const FormData = () => {
-  const [typeofservice, setTypeofservice] = useState("");
+const FileUploadForm = () => {
+  const nav = useNavigate();
+  const [formData, setFormData] = useState(initialFormData);
+  const [files, setFiles] = useState([]);
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
 
-  const onFinish = async values => {
-    try {
-      const formData = new FormData();
-      formData.append("name", values.name);
-      formData.append("email", values.email);
-      formData.append("Phone", values.Phone);
-      formData.append("services", typeofservice);
+  const onDrop = acceptedFiles => {
+    setFiles([...files, ...acceptedFiles]);
+  };
 
-      // Append files to FormData
-      values.files.fileList.forEach(file => {
-        formData.append("files", file.originFileObj);
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: ".pdf, .doc, .docx", // Specify accepted file types here
+  });
+
+  const handleChange = e => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+  let data = localStorage.getItem("user");
+  let getid = JSON.parse(data);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3002/user/${getid.id}`
+        );
+        const userData = response.data.user; 
+        console.log(userData);// Assuming the response contains user data
+        setFormData({
+          ...initialFormData,
+          ...userData,id:getid.id,
+        });
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, [getid.id]);
+  const handleSubmit = async e => {
+    e.preventDefault();
+
+    try {
+      const form = new FormData();
+      form.append("id", getid.id);
+      form.append("name", formData.name);
+      form.append("email", formData.email);
+      form.append("phone", formData.phone);
+      form.append("date", formData.date);
+      form.append("service", formData.service);
+      files.forEach(file => {
+        form.append("files", file);
       });
 
-      // Add Date Input Field
-      formData.append("date", values.date.format("YYYY-MM-DD"));
+      await axios.post("http://localhost:3002/upload", form);
 
-      // Send the form data and files to the backend
-      const response = await axios.post(
-        "http://localhost:3002/upload",
-        formData
-      );
-
-      if (response.status === 200) {
-        setSubmissionSuccess(true);
-      } else {
-        message.error("Form submission failed. Please try again.");
-      }
+      setSubmissionSuccess(true);
+      setTimeout(() => {
+        nav(`/user/${getid.id}`);
+      }, 2000);
     } catch (error) {
       console.error("Error submitting form:", error);
-      message.error("Form submission failed. Please try again.");
     }
   };
 
   return (
-    <div className="form-container">
-      <h1 className="form-title">File Return Form</h1>
-
-      {submissionSuccess ? (
-        <Alert className="form-alert" severity="success">
-          <AlertTitle>Success</AlertTitle>
-          Your form has been submitted successfully.
-        </Alert>
-      ) : (
-        <Form layout="vertical" onFinish={onFinish} className="ant-form">
-          <Form.Item
-            label="Name"
-            name="name"
-            rules={[{ required: true, message: "Please enter your name" }]}>
-            <Input type="text" className="ant-input" />
-          </Form.Item>
-          <Form.Item
-            label="Email"
-            name="email"
-            rules={[{ required: true, message: "Please enter your email" }]}>
-            <Input type="email" className="ant-input" />
-          </Form.Item>
-          <Form.Item
-            label="Phone"
-            name="Phone"
-            rules={[
-              { required: true, message: "Please enter your phone number" },
-            ]}>
-            <Input type="tel" className="ant-input" />
-          </Form.Item>
-          <Form.Item label={<span>Services</span>} name="services">
-            <Select
-              options={options}
-              value={typeofservice}
-              onChange={e => {
-                setTypeofservice(e);
-              }}
-              placeholder="Select a service"
-            />
-          </Form.Item>
-          {/* Date Input Field */}
-          <Form.Item
-            label="Date"
-            name="date"
-            rules={[{ required: true, message: "Please select a date" }]}>
-            <DatePicker  style={{ width: "100%" }} />
-          </Form.Item>
-          <Form.Item label="Upload Files" name="files">
-            <Dragger {...props} className="ant-upload">
-              <p className="ant-upload-drag-icon">
-                <InboxOutlined />
-              </p>
-              <p className="ant-upload-text">
-                Click or drag files to this area to upload
-              </p>
-            </Dragger>
-          </Form.Item>
-          <div className="form-button-container">
-            <Button
-              className="ant-btn form-button"
-              type="primary"
-              htmlType="submit">
-              Submit
-            </Button>
-          </div>
-        </Form>
-      )}
-    </div>
+    <Container>
+      <Paper elevation={3} style={{ padding: "16px" }}>
+        <Typography variant="h4" align="center">
+          File Upload Form
+        </Typography>
+        {submissionSuccess ? (
+          <Typography variant="h6" align="center" style={{ color: "green" }}>
+            Form submitted successfully.
+          </Typography>
+        ) : (
+          <form onSubmit={handleSubmit}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="User_Id"
+                  name="namid"
+                  variant="outlined"
+                  value={getid.id}
+                  onChange={handleChange}
+                  required // Set as required
+                  disabled={true}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Name"
+                  name="name"
+                  variant="outlined"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required // Set as required
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Email"
+                  name="email"
+                  type="email"
+                  variant="outlined"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required // Set as required
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Phone"
+                  name="phone"
+                  variant="outlined"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required // Set as required
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Date"
+                  name="date"
+                  type="date"
+                  variant="outlined"
+                  InputLabelProps={{ shrink: true }}
+                  value={formData.date}
+                  onChange={handleChange}
+                  required // Set as required
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  select // Use select for dropdown
+                  label="Service"
+                  name="service"
+                  variant="outlined"
+                  value={formData.service}
+                  onChange={handleChange}
+                  required // Set as required
+                >
+                  {options.map(option => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+              <Grid item xs={12}>
+                <div {...getRootProps()} style={dropzoneStyles}>
+                  <input {...getInputProps()} />
+                  <CloudUploadIcon fontSize="large" />
+                  <Typography variant="subtitle1">
+                    Drag & drop or click to upload files (PDF, DOC, DOCX)
+                  </Typography>
+                </div>
+                {files.length > 0 && (
+                  <div>
+                    <Typography variant="subtitle1">Selected Files:</Typography>
+                    <ul>
+                      {files.map(file => (
+                        <li key={file.name}>{file.name}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  size="large">
+                  Submit
+                </Button>
+              </Grid>
+            </Grid>
+          </form>
+        )}
+      </Paper>
+    </Container>
   );
 };
 
-export default FormData;
+const dropzoneStyles = {
+  border: "2px dashed #cccccc",
+  borderRadius: "4px",
+  padding: "20px",
+  textAlign: "center",
+  cursor: "pointer",
+};
+
+export default FileUploadForm;

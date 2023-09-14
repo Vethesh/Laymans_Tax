@@ -33,7 +33,7 @@ function App() {
         <Route path="/pricing" element={<Pricing />} />{" "}
         <Route path="/modal" element={<FormData />} />
         <Route path="/forgot" element={<Forgotpassword />} />
-        <Route path="/user/:id" element={<Wrap><User /></Wrap>} />
+        <Route path="/user/:id" element={<User />} />
         <Route path="/gst" element={<Gst />} />
         <Route path="/admin/:id" element={<Admin />} />
         <Route path="*" element={<PageNotFound />} />
