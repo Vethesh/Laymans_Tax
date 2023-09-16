@@ -3,11 +3,11 @@ import "../Users/style.css";
 import { useNavigate } from "react-router-dom";
 import { Menu } from "antd";
 
-import Gst from "../Services/Gst";
+import GstA from "./GstA";
 import Bookkeeping from "../Services/Bookkeeping";
-import Income from "../Services/Income";
+import IncomeA from "./IncomeA";
 import Profile from "../Pages/Profile";
-import Task from "../Users/Task";
+import Alluser from "./Alluser";
 import { UserOutlined } from "@ant-design/icons";
 import TaskAltOutlinedIcon from "@mui/icons-material/TaskAltOutlined";
 import ImportContactsOutlinedIcon from "@mui/icons-material/ImportContactsOutlined";
@@ -97,7 +97,7 @@ const Admin = () => {
 
                 setTask(true);
               }}>
-              My task
+              All Users
             </Menu.Item>
             <Menu.Item
               icon={<ImportContactsOutlinedIcon />}
@@ -168,11 +168,11 @@ const Admin = () => {
         <div className="parent">
           <MenuAppBar />
           {book && <Bookkeeping />}
-          {gst && <Gst />}
-          {income && <Income />}
+          {gst && <GstA />}
+          {income && <IncomeA />}
 
           {profile && <Profile />}
-          {task && <Task />}
+          {task && <Alluser />}
           {blog && <Blogs />}
         </div>
       </div>

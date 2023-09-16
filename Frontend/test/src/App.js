@@ -21,7 +21,14 @@ function App() {
   return (
     <div style={{ width: "100%", height: "100%" }}>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route
+          path="/"
+          element={
+            <Wrap>
+              <Home />
+            </Wrap>
+          }
+        />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<LogingIn />} />
         <Route path="/bookkeeping" element={<Bookeeping />} />
@@ -52,7 +59,7 @@ export function Wrap({ child }) {
       return <Navigate to={`/user/${a.id}`} />;
     }
   } else {
-    return <Navigate to={"/"} />;
+    return <Navigate to={"/login"} />;
   }
 }
 export default App;

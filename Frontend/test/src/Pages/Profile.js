@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, message, Space } from "antd";
 import {
-  UserOutlined,
-  MailOutlined,
-  PhoneOutlined,
-  EditOutlined,
-} from "@ant-design/icons";
+  Button,
+  TextField,
+  Typography,
+  Container,
+  Grid,
+  Paper,
+  CssBaseline,
+} from "@mui/material";
+import {
+  Edit as EditIcon,
+  Save as SaveIcon,
+  Cancel as CancelIcon,
+} from "@mui/icons-material";
 import axios from "axios";
-import "./profile.css";
 import Spinner from "../Componenets/Spinner";
 
 const Profile = () => {
@@ -27,103 +33,128 @@ const Profile = () => {
     if (userId) {
       axios
         .get(`http://localhost:3002/user/${userId}`)
-        .then((response) => {
+        .then(response => {
           const Data = response.data.user;
-        
-          console.log(typeof Data)
-          setFormData(
-           {name:Data.name,email:Data.email,phone:Data.phone}
-          );
-          console.log(formData)
+          setFormData({
+            ...formData,
+            ...Data,
+          });
         })
-        .catch((error) => {
+        .catch(error => {
           console.error(error);
-          message.error("Failed to fetch user data");
         });
     }
   }, []);
 
-  const submitHandler = async () => {
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleSubmit = async () => {
     try {
       setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 8000));
-      // Perform the update operation here
+      // Simulate an update operation with a delay
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
       // For demonstration purposes, we'll just show a success message
-      message.success("Profile updated successfully");
       setLoading(false);
+      alert("Profile updated successfully");
+      setIsEditing(false); // Disable editing after saving
     } catch (error) {
       setLoading(false);
-      message.error("Invalid credentials");
+      alert("Failed to update profile");
     }
   };
 
   return (
-    <div className="user-profile">
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
       {loading && <Spinner />}
+      <Paper elevation={3} style={{ padding: "16px", margin: "16px auto" }}>
+        <Typography variant="h5" align="center">
+          User Profile
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                fullWidth
+                label="Name"
+                name="name"
+                disabled={!isEditing}
+                value={formData.name}
+                onChange={e =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
+              />
+            </Grid>
 
-      <h2>User Profile Page</h2>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                fullWidth
+                label="Email"
+                name="email"
+                type="email"
+                disabled={!isEditing}
+                value={formData.email}
+                onChange={e =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+              />
+            </Grid>
 
-      <Form
-        layout="vertical"
-        onFinish={submitHandler}
-        initialValues={formData} // Initialize form with user data
-      >
-        <Form.Item label="Name" name="name">
-          <Input
-            prefix={<UserOutlined />}
-            type="text"
-            name="name"
-            disabled={!isEditing}
-            defaultValue={formData.name} // Add value prop to prefill the input field
-          />
-        </Form.Item>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                fullWidth
+                label="Phone"
+                name="phone"
+                disabled={!isEditing}
+                value={formData.phone}
+                onChange={e =>
+                  setFormData({ ...formData, phone: e.target.value })
+                }
+              />
+            </Grid>
 
-        <Form.Item label="Email" name="email">
-          <Input
-            prefix={<MailOutlined />}
-            type="email"
-            name="email"
-            disabled={!isEditing}
-            defaultValue={formData.email} // Add value prop to prefill the input field
-          />
-        </Form.Item>
-
-        <Form.Item label="Phone" name="phone">
-          <Input
-            prefix={<PhoneOutlined />}
-            type="tel"
-            name="phone"
-            disabled={!isEditing}
-            defaultValue={formData.phone} // Add value prop to prefill the input field
-          />
-        </Form.Item>
-
-        <Space>
-          {isEditing ? (
-            <>
-              <Button
-                type="primary"
-                htmlType="submit"
-                style={{ marginRight: 16 }}>
-                Save
-              </Button>
-              <Button type="default" onClick={() => setIsEditing(false)}>
-                Cancel
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button
-                type="primary"
-                icon={<EditOutlined />}
-                onClick={() => setIsEditing(true)}>
-                Edit Profile
-              </Button>
-            </>
-          )}
-        </Space>
-      </Form>
-    </div>
+            <Grid item xs={12}>
+              {isEditing ? (
+                <>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    startIcon={<SaveIcon />}>
+                    Save
+                  </Button>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    color="default"
+                    startIcon={<CancelIcon />}
+                    onClick={() => setIsEditing(false)}
+                    style={{ marginTop: "8px" }}>
+                    Cancel
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  startIcon={<EditIcon />}
+                  onClick={handleEditClick}>
+                  Edit Profile
+                </Button>
+              )}
+            </Grid>
+          </Grid>
+        </form>
+      </Paper>
+    </Container>
   );
 };
 

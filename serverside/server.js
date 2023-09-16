@@ -284,14 +284,14 @@ app.get("/getblog", (req, res) => {
 //user transaction
 const multer = require("multer");
 const upload = multer();
-
-app.post("/upload", upload.array("files", 20), (req, res) => {
+//for gst
+app.post("/upload/gt", upload.array("files", 20), (req, res) => {
   const files = req.files;
-  const { id,name, email, phone, date, service } = req.body;
+  const { id, name, email, phone, date, service } = req.body;
 
   // Check if required fields are present
   if (
-    !id||
+    !id ||
     !name ||
     !email ||
     !phone ||
@@ -310,8 +310,17 @@ app.post("/upload", upload.array("files", 20), (req, res) => {
   }));
 
   db.query(
-    "INSERT INTO transaction (id,name, email, phone, date, service, file) VALUES (?,?, ?, ?, ?, ?, ?)",
-    [id,name, email, phone, date, service, JSON.stringify(fileData)],
+    "INSERT INTO gst (id,name, email, phone, date, service, filecount,filedata) VALUES (?,?, ?, ?, ?, ?,?,?)",
+    [
+      id,
+      name,
+      email,
+      phone,
+      date,
+      service,
+      files.length,
+      JSON.stringify(fileData),
+    ],
     (err, result) => {
       if (err) {
         console.error(err);
@@ -325,7 +334,55 @@ app.post("/upload", upload.array("files", 20), (req, res) => {
   );
 });
 
+//for itr
+app.post("/upload/itr", upload.array("files", 20), (req, res) => {
+  const files = req.files;
+  const { id, name, email, phone, date, service } = req.body;
 
+  // Check if required fields are present
+  if (
+    !id ||
+    !name ||
+    !email ||
+    !phone ||
+    !date ||
+    !service ||
+    !files ||
+    files.length === 0
+  ) {
+    return res.status(400).send("Missing required fields or files.");
+  }
+
+  const fileData = files.map(file => ({
+    file_name: file.originalname,
+    file_type: file.mimetype,
+    file_data: file.buffer,
+  }));
+
+  db.query(
+    "INSERT INTO itr (id,name, email, phone, date, service, filecount,filedata) VALUES (?,?,?, ?, ?, ?, ?, ?)",
+    [
+      id,
+      name,
+      email,
+      phone,
+      date,
+      service,
+      files.length,
+      JSON.stringify(fileData),
+    ],
+    (err, result) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send("Transaction creation failed.");
+      }
+
+      // const transactionId = result.insertId;
+
+      res.send("Transaction data and files uploaded successfully.");
+    }
+  );
+});
 //contact page
 
 app.post("/contact", (req, res) => {
@@ -347,6 +404,66 @@ app.post("/contact", (req, res) => {
       res.status(200).send("submission successful.");
     }
   );
+});
+
+//get data for table gst and itr
+app.get("/getgst", (req, res) => {
+  try {
+    db.query(
+      "SELECT *, HEX(fileData) AS fileData FROM gst",
+
+      (err, results) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send("Internal Server Error");
+        }
+
+        res.status(200).json({ data: results });
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal Server Problem");
+  }
+});
+
+//for getalll itr
+app.get("/getitr", (req, res) => {
+  try {
+    db.query(
+      "SELECT *, HEX(fileData) AS fileData FROM itr",
+
+      (err, results) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send("Internal Server Error");
+        }
+        console.log("Query Results:", results);
+
+        res.status(200).json({ data: results });
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal Server Problem");
+  }
+});
+
+//get allusers
+app.get("/getallusers", (req, res) => {
+  try {
+    db.query("SELECT *  FROM user WHERE type!= 'admin'", (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send("Internal Server Error");
+      }
+
+      res.status(200).json({ data: results });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal Server Problem");
+  }
 });
 
 //connection

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, message, Select } from "antd";
+import { Form, message} from "antd";
 import Input from "antd/es/input/Input";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -7,7 +7,7 @@ import Spinner from "../Componenets/Spinner";
 import axios from "axios";
 import Layout from "../Componenets/Layout";
 
-const { Option } = Select;
+
 
 const Signup = () => {
   const [loading, setLoading] = useState(false);
@@ -15,7 +15,7 @@ const Signup = () => {
 
   const submitHandler = async values => {
     try {
-      const type = values.type;
+      const type = "user";
 
       const requestData = {
         email: values.email,
@@ -69,14 +69,7 @@ const Signup = () => {
                 <Input type="text" />
               </Form.Item>
             </div>
-            <div className="input">
-              <Form.Item label={<span>User Type</span>} name="type">
-                <Select defaultValue="user">
-                  <Option value="user">User</Option>
-                  <Option value="admin">Admin</Option>
-                </Select>
-              </Form.Item>
-            </div>
+            
             <div className="input">
               <div className="d-flex align-center">
                 <button className="btn btn-primary" type="submit">

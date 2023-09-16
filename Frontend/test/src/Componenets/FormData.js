@@ -90,8 +90,14 @@ const FileUploadForm = () => {
       files.forEach(file => {
         form.append("files", file);
       });
-
-      await axios.post("http://localhost:3002/upload", form);
+      if(formData.service[0] === "G")
+      {
+        await axios.post("http://localhost:3002/upload/gt", form);
+      }
+      else{
+        await axios.post("http://localhost:3002/upload/itr", form);
+      }
+      
 
       setSubmissionSuccess(true);
       setTimeout(() => {
@@ -119,7 +125,7 @@ const FileUploadForm = () => {
                 <TextField
                   fullWidth
                   label="User_Id"
-                  name="namid"
+                  name="id"
                   variant="outlined"
                   value={getid.id}
                   onChange={handleChange}
