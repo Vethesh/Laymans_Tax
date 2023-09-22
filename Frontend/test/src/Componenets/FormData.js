@@ -14,7 +14,7 @@ import { useDropzone } from "react-dropzone";
 import axios from "axios";
 
 const initialFormData = {
-  id:"",
+  id: "",
   name: "",
   email: "",
   phone: "",
@@ -48,7 +48,7 @@ const FileUploadForm = () => {
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
-    accept: ".pdf, .doc, .docx", // Specify accepted file types here
+    accept: ".pdf, .doc, .docx ,.jpg,.jpeg ,.png", // Specify accepted file types here
   });
 
   const handleChange = e => {
@@ -63,11 +63,12 @@ const FileUploadForm = () => {
         const response = await axios.get(
           `http://localhost:3002/user/${getid.id}`
         );
-        const userData = response.data.user; 
-        console.log(userData);// Assuming the response contains user data
+        const userData = response.data.user;
+        console.log(userData); // Assuming the response contains user data
         setFormData({
           ...initialFormData,
-          ...userData,id:getid.id,
+          ...userData,
+          id: getid.id,
         });
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -90,14 +91,11 @@ const FileUploadForm = () => {
       files.forEach(file => {
         form.append("files", file);
       });
-      if(formData.service[0] === "G")
-      {
+      if (formData.service[0] === "G") {
         await axios.post("http://localhost:3002/upload/gt", form);
-      }
-      else{
+      } else {
         await axios.post("http://localhost:3002/upload/itr", form);
       }
-      
 
       setSubmissionSuccess(true);
       setTimeout(() => {

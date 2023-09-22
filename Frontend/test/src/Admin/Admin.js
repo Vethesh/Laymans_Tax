@@ -59,7 +59,7 @@ const Admin = () => {
                 height: "3.5rem",
                 color: "white",
               }}>
-              {mail.email[0].toUpperCase()}
+              {mail.email[2].toUpperCase()}
             </Avatar>
           </div>
           <div className="user-name" style={{ textAlign: "center" }}>

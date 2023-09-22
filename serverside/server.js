@@ -335,7 +335,7 @@ app.post("/upload/gt", upload.array("files", 20), (req, res) => {
 });
 
 //for itr
-app.post("/upload/itr", upload.array("files", 20), (req, res) => {
+app.post("/upload/itr", upload.array("files", 30), (req, res) => {
   const files = req.files;
   const { id, name, email, phone, date, service } = req.body;
 
