@@ -304,13 +304,13 @@ app.post("/upload/gt", upload.array("files", 20), (req, res) => {
   }
 
   const fileData = files.map(file => ({
-    file_name: file.originalname,
+    file_name: file.originalname, // New column for file name
     file_type: file.mimetype,
     file_data: file.buffer,
   }));
 
   db.query(
-    "INSERT INTO gst (id,name, email, phone, date, service, filecount,filedata) VALUES (?,?, ?, ?, ?, ?,?,?)",
+    "INSERT INTO gst (id, name, email, phone, date, service, filetype, filecount, filename, filedata) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
     [
       id,
       name,
@@ -318,8 +318,10 @@ app.post("/upload/gt", upload.array("files", 20), (req, res) => {
       phone,
       date,
       service,
+      JSON.stringify(fileData.map(file => file.file_type)),
       files.length,
-      JSON.stringify(fileData),
+      JSON.stringify(fileData.map(file => file.file_name)),
+      JSON.stringify(fileData.map(file => file.file_data)),
     ],
     (err, result) => {
       if (err) {
@@ -327,15 +329,13 @@ app.post("/upload/gt", upload.array("files", 20), (req, res) => {
         return res.status(500).send("Transaction creation failed.");
       }
 
-      // const transactionId = result.insertId;
-
       res.send("Transaction data and files uploaded successfully.");
     }
   );
 });
 
 //for itr
-app.post("/upload/itr", upload.array("files", 30), (req, res) => {
+app.post("/upload/itr", upload.array("files", 20), (req, res) => {
   const files = req.files;
   const { id, name, email, phone, date, service } = req.body;
 
@@ -354,13 +354,13 @@ app.post("/upload/itr", upload.array("files", 30), (req, res) => {
   }
 
   const fileData = files.map(file => ({
-    file_name: file.originalname,
+    file_name: file.originalname, // New column for file name
     file_type: file.mimetype,
     file_data: file.buffer,
   }));
 
   db.query(
-    "INSERT INTO itr (id,name, email, phone, date, service, filecount,filedata) VALUES (?,?,?, ?, ?, ?, ?, ?)",
+    "INSERT INTO itr (id, name, email, phone, date, service, filetype, filecount, filename, filedata) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
     [
       id,
       name,
@@ -368,16 +368,16 @@ app.post("/upload/itr", upload.array("files", 30), (req, res) => {
       phone,
       date,
       service,
+      JSON.stringify(fileData.map(file => file.file_type)),
       files.length,
-      JSON.stringify(fileData),
+      JSON.stringify(fileData.map(file => file.file_name)),
+      JSON.stringify(fileData.map(file => file.file_data)),
     ],
     (err, result) => {
       if (err) {
         console.error(err);
         return res.status(500).send("Transaction creation failed.");
       }
-
-      // const transactionId = result.insertId;
 
       res.send("Transaction data and files uploaded successfully.");
     }
@@ -464,6 +464,52 @@ app.get("/getallusers", (req, res) => {
     console.log(error);
     res.status(500).send("Internal Server Problem");
   }
+});
+
+//transaction data
+//for gst
+app.get("/transaction/gst/:id", (req, res) => {
+  const id = req.params.id;
+
+  db.query(
+    "SELECT service, date FROM gst WHERE id = ?",
+    [id],
+    (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send("Internal Server Error");
+      }
+
+      if (results.length === 0) {
+        return res.status(404).send("Data not found.");
+      }
+
+      
+      res.json({ data :results});
+    }
+  );
+});
+
+//for itr
+app.get("/transaction/itr/:id", (req, res) => {
+  const id = req.params.id;
+
+  db.query(
+    "SELECT service, date FROM itr WHERE id = ?",
+    [id],
+    (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send("Internal Server Error");
+      }
+
+      if (results.length === 0) {
+        return res.status(404).send("Data not found.");
+      }
+
+      res.json({ data: results });
+    }
+  );
 });
 
 //connection

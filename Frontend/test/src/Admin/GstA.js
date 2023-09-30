@@ -20,9 +20,10 @@ const IncomeA = () => {
             name: user.name,
             email: user.email,
             phone: user.phone,
-            date: user.date.slice(0,10),
+            date: user.date.slice(0, 10),
             service: user.service,
-            fileData: user.fileData,
+            fileName: user.filename,
+            fileData: user.filedata,
             key: user.id,
           }));
           setData(filteredData);
@@ -44,6 +45,7 @@ const IncomeA = () => {
     { title: "Phone", dataIndex: "phone", key: "phone" },
     { title: "Date", dataIndex: "date", key: "date" },
     { title: "Service", dataIndex: "service", key: "service" },
+    { title: "File Name", dataIndex: "fileName", key: "fileName" }, // Add this column
     {
       title: "File Data",
       key: "fileData",
@@ -62,7 +64,7 @@ const IncomeA = () => {
       dataSource={data}
       columns={columns}
       loading={loading}
-      pagination={false}
+      pagination={true}
     />
   );
 };
