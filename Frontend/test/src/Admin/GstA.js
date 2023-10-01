@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
+import { Table, Select, Button } from "antd";
 import axios from "axios";
 
-const IncomeA = () => {
+const { Option } = Select;
+
+const GstA = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -12,7 +14,6 @@ const IncomeA = () => {
 
       try {
         const response = await axios.get(`http://localhost:3002/getgst`);
-        console.log(response.data);
         const userData = response.data.data;
 
         if (userData.length > 0) {
@@ -22,8 +23,8 @@ const IncomeA = () => {
             phone: user.phone,
             date: user.date.slice(0, 10),
             service: user.service,
-            fileName: user.filename,
-            fileData: user.filedata,
+            fileNames: JSON.parse(user.filename),
+            fileData: user.fileData,
             key: user.id,
           }));
           setData(filteredData);
@@ -39,22 +40,69 @@ const IncomeA = () => {
     fetchData();
   }, []);
 
+  const downloadFile = (fileData, fileName) => {
+    // Convert hex data to binary
+    const binaryData = atob(fileData);
+
+    // Create a blob from the binary data
+    const blob = new Blob([new Uint8Array(binaryData)], {
+      type: "application/octet-stream",
+    });
+
+    // Create a URL for the blob
+    const url = window.URL.createObjectURL(blob);
+
+    // Create a download link and trigger the download
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = fileName;
+    a.click();
+
+    // Revoke the blob URL
+    window.URL.revokeObjectURL(url);
+  };
+
+  const sendEmail = email => {
+    window.location.href = `mailto:${email}`;
+  };
+
   const columns = [
     { title: "Name", dataIndex: "name", key: "name" },
     { title: "Email", dataIndex: "email", key: "email" },
     { title: "Phone", dataIndex: "phone", key: "phone" },
     { title: "Date", dataIndex: "date", key: "date" },
     { title: "Service", dataIndex: "service", key: "service" },
-    { title: "File Name", dataIndex: "fileName", key: "fileName" }, // Add this column
     {
-      title: "File Data",
-      key: "fileData",
+      title: "File Names",
+      key: "fileNames",
       render: (text, record) => (
-        <a
-          href={`data:${record.fileType};base64,${record.fileData}`}
-          download={record.fileName}>
+        <Select style={{ width: 120 }}>
+          {record.fileNames.map((fileName, index) => (
+            <Option key={index} value={fileName}>
+              {fileName}
+            </Option>
+          ))}
+        </Select>
+      ),
+    },
+    {
+      title: "Download",
+      key: "download",
+      render: (text, record) => (
+        <Button
+          type="primary"
+          onClick={() => downloadFile(record.fileData, record.fileNames[0])}>
           Download
-        </a>
+        </Button>
+      ),
+    },
+    {
+      title: "Contact",
+      key: "contact",
+      render: (text, record) => (
+        <Button type="primary" onClick={() => sendEmail(record.email)}>
+          Contact
+        </Button>
       ),
     },
   ];
@@ -69,4 +117,4 @@ const IncomeA = () => {
   );
 };
 
-export default IncomeA;
+export default GstA;

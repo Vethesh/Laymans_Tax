@@ -409,46 +409,49 @@ app.post("/contact", (req, res) => {
 //get data for table gst and itr
 app.get("/getgst", (req, res) => {
   try {
-    db.query(
-      "SELECT *, HEX(fileData) AS fileData FROM gst",
-
-      (err, results) => {
-        if (err) {
-          console.error(err);
-          return res.status(500).send("Internal Server Error");
-        }
-
-        res.status(200).json({ data: results });
+    db.query("SELECT *, HEX(fileData) AS fileData FROM gst", (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send("Internal Server Error");
       }
-    );
+
+      // Format the filename field as a JSON array
+      const formattedResults = results.map(result => ({
+        ...result,
+        filename: JSON.stringify([result.filename]), // Convert a single filename to an array
+      }));
+
+      res.status(200).json({ data: formattedResults });
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send("Internal Server Problem");
   }
 });
+
 
 //for getalll itr
 app.get("/getitr", (req, res) => {
   try {
-    db.query(
-      "SELECT *, HEX(fileData) AS fileData FROM itr",
-
-      (err, results) => {
-        if (err) {
-          console.error(err);
-          return res.status(500).send("Internal Server Error");
-        }
-        console.log("Query Results:", results);
-
-        res.status(200).json({ data: results });
+    db.query("SELECT *, HEX(fileData) AS fileData FROM itr", (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send("Internal Server Error");
       }
-    );
+
+      // Format the filename field as a JSON array
+      const formattedResults = results.map(result => ({
+        ...result,
+        filename: JSON.stringify([result.filename]), // Convert a single filename to an array
+      }));
+
+      res.status(200).json({ data: formattedResults });
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send("Internal Server Problem");
   }
 });
-
 //get allusers
 app.get("/getallusers", (req, res) => {
   try {
