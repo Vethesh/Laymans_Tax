@@ -24,7 +24,7 @@ const GstA = () => {
             date: user.date.slice(0, 10),
             service: user.service,
             fileNames: JSON.parse(user.filename),
-            fileData: user.fileData,
+            fileData: user.fileData, // Binary data from the backend
             key: user.id,
           }));
           setData(filteredData);
@@ -40,26 +40,43 @@ const GstA = () => {
     fetchData();
   }, []);
 
-  const downloadFile = (fileData, fileName) => {
-    // Convert hex data to binary
-    const binaryData = atob(fileData);
+  const downloadFile = (hexFileData, fileName) => {
+    try {
+      // Determine the content type based on the file extension
+      const fileExtension = getFileExtension(fileName);
+      let contentType = "application/octet-stream"; // Default to binary data
 
-    // Create a blob from the binary data
-    const blob = new Blob([new Uint8Array(binaryData)], {
-      type: "application/octet-stream",
-    });
+      if (fileExtension === "pdf") {
+        contentType = "application/pdf";
+      } else if (["jpg", "jpeg", "png"].includes(fileExtension)) {
+        contentType = `image/${fileExtension}`;
+      } else if (fileExtension === "docx") {
+        contentType =
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+      }
 
-    // Create a URL for the blob
-    const url = window.URL.createObjectURL(blob);
+      // Convert hex data to binary
+      const binaryData = hexToBinary(hexFileData);
 
-    // Create a download link and trigger the download
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = fileName;
-    a.click();
+      // Create a blob from the binary data with the correct content type
+      const blob = new Blob([new Uint8Array(binaryData)], {
+        type: contentType,
+      });
 
-    // Revoke the blob URL
-    window.URL.revokeObjectURL(url);
+      // Create a URL for the blob
+      const url = window.URL.createObjectURL(blob);
+
+      // Create a download link and trigger the download
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = trimFileName(fileName, fileExtension);
+      a.click();
+
+      // Revoke the blob URL
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error while downloading file:", error);
+    }
   };
 
   const sendEmail = email => {
@@ -79,7 +96,7 @@ const GstA = () => {
         <Select style={{ width: 120 }}>
           {record.fileNames.map((fileName, index) => (
             <Option key={index} value={fileName}>
-              {fileName}
+              {trimFileName(fileName)}
             </Option>
           ))}
         </Select>
@@ -106,6 +123,24 @@ const GstA = () => {
       ),
     },
   ];
+  // Function to convert hex data to binary
+  const hexToBinary = hexString => {
+    const bytes = [];
+    for (let i = 0; i < hexString.length; i += 2) {
+      bytes.push(parseInt(hexString.substr(i, 2), 16));
+    }
+    return new Uint8Array(bytes);
+  };
+
+  const trimFileName = fileName => {
+    const cleanedFileName = fileName.replace(/[\[\],"\s]/g, "");
+    return cleanedFileName;
+  };
+
+  const getFileExtension = fileName => {
+    const cleanedFileName = fileName.replace(/[\[\],"\s]/g, "");
+    return cleanedFileName.split(".").pop().toLowerCase();
+  };
 
   return (
     <Table

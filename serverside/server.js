@@ -334,6 +334,8 @@ app.post("/upload/gt", upload.array("files", 20), (req, res) => {
   );
 });
 
+
+
 //for itr
 app.post("/upload/itr", upload.array("files", 20), (req, res) => {
   const files = req.files;
@@ -415,13 +417,7 @@ app.get("/getgst", (req, res) => {
         return res.status(500).send("Internal Server Error");
       }
 
-      // Format the filename field as a JSON array
-      const formattedResults = results.map(result => ({
-        ...result,
-        filename: JSON.stringify([result.filename]), // Convert a single filename to an array
-      }));
-
-      res.status(200).json({ data: formattedResults });
+      res.status(200).json({ data: results });
     });
   } catch (error) {
     console.log(error);
@@ -439,13 +435,7 @@ app.get("/getitr", (req, res) => {
         return res.status(500).send("Internal Server Error");
       }
 
-      // Format the filename field as a JSON array
-      const formattedResults = results.map(result => ({
-        ...result,
-        filename: JSON.stringify([result.filename]), // Convert a single filename to an array
-      }));
-
-      res.status(200).json({ data: formattedResults });
+      res.status(200).json({ data: results });
     });
   } catch (error) {
     console.log(error);
@@ -487,8 +477,7 @@ app.get("/transaction/gst/:id", (req, res) => {
         return res.status(404).send("Data not found.");
       }
 
-      
-      res.json({ data :results});
+      res.json({ data: results });
     }
   );
 });

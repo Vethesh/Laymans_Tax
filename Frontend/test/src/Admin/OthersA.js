@@ -4,7 +4,7 @@ import axios from "axios";
 
 const { Option } = Select;
 
-const IncomeA = () => {
+const OthersA = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -13,7 +13,7 @@ const IncomeA = () => {
       setLoading(true);
 
       try {
-        const response = await axios.get(`http://localhost:3002/getitr`);
+        const response = await axios.get(`http://localhost:3002/getother`);
         const userData = response.data.data;
 
         if (userData.length > 0) {
@@ -152,4 +152,4 @@ const IncomeA = () => {
   );
 };
 
-export default IncomeA;
+export default OthersA;
