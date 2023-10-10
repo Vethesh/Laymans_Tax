@@ -92,7 +92,7 @@ const FileUploadForm = () => {
         form.append("files", file);
       });
       if (formData.service[0] === "G") {
-        await axios.post("http://localhost:3002/upload/gt", form);
+        await axios.post("http://localhost:3002/upload/gtt", form);
       } else {
         await axios.post("http://localhost:3002/upload/itr", form);
       }

@@ -15,16 +15,16 @@ const GstA = () => {
       try {
         const response = await axios.get(`http://localhost:3002/getgst`);
         const userData = response.data.data;
-
+        console.log(userData);
         if (userData.length > 0) {
-          const filteredData = response.data.data.map(user => ({
+          const filteredData = userData.map(user => ({
             name: user.name,
             email: user.email,
             phone: user.phone,
             date: user.date.slice(0, 10),
             service: user.service,
-            fileNames: JSON.parse(user.filename),
-            fileData: user.fileData, // Binary data from the backend
+            fileNames: JSON.parse(user.files).map(file => file.filename),
+            fileData: user.filedata, // Access 'data' property directly
             key: user.id,
           }));
           setData(filteredData);
@@ -40,7 +40,7 @@ const GstA = () => {
     fetchData();
   }, []);
 
-  const downloadFile = (hexFileData, fileName) => {
+  const downloadFile = async (fileData, fileName) => {
     try {
       // Determine the content type based on the file extension
       const fileExtension = getFileExtension(fileName);
@@ -55,13 +55,13 @@ const GstA = () => {
           "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
       }
 
-      // Convert hex data to binary
-      const binaryData = hexToBinary(hexFileData);
-
       // Create a blob from the binary data with the correct content type
-      const blob = new Blob([new Uint8Array(binaryData)], {
+      const blob = new Blob([fileData], {
         type: contentType,
       });
+
+      // Determine the file size (in bytes)
+      const fileSize = blob.size;
 
       // Create a URL for the blob
       const url = window.URL.createObjectURL(blob);
@@ -70,6 +70,10 @@ const GstA = () => {
       const a = document.createElement("a");
       a.href = url;
       a.download = trimFileName(fileName, fileExtension);
+
+      // Add the file size to the download link as a custom attribute
+      a.setAttribute("data-file-size", fileSize);
+
       a.click();
 
       // Revoke the blob URL
@@ -123,14 +127,6 @@ const GstA = () => {
       ),
     },
   ];
-  // Function to convert hex data to binary
-  const hexToBinary = hexString => {
-    const bytes = [];
-    for (let i = 0; i < hexString.length; i += 2) {
-      bytes.push(parseInt(hexString.substr(i, 2), 16));
-    }
-    return new Uint8Array(bytes);
-  };
 
   const trimFileName = fileName => {
     const cleanedFileName = fileName.replace(/[\[\],"\s]/g, "");

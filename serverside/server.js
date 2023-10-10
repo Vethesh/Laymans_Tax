@@ -283,7 +283,49 @@ app.get("/getblog", (req, res) => {
 
 //user transaction
 const multer = require("multer");
-const upload = multer();
+ 
+const upload = multer( ); // Define your upload destination
+
+app.post("/upload/gtt", upload.array("files", 5), (req, res) => {
+  try {
+    const { id, name, email, phone, date, service } = req.body;
+    const filecount = req.files.length;
+    const files = req.files.map((file) => ({
+      filename: file.originalname,
+      filetype: file.mimetype,
+    }));
+    const filedata = req.files.map((file) => file.buffer);
+
+    // Insert data into the gst table
+    db.query(
+      "INSERT INTO G (id, name, email, phone, date, service, filecount, files, filedata) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [
+        id,
+        name,
+        email,
+        phone,
+        date,
+        service,
+        filecount,
+        JSON.stringify(files),
+        filedata,
+      ],
+      (err, results) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send("Internal Server Error");
+        }
+
+        res.status(200).send("Data inserted successfully");
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal Server Problem");
+  }
+});
+
+
 //for gst
 app.post("/upload/gt", upload.array("files", 20), (req, res) => {
   const files = req.files;
@@ -333,8 +375,6 @@ app.post("/upload/gt", upload.array("files", 20), (req, res) => {
     }
   );
 });
-
-
 
 //for itr
 app.post("/upload/itr", upload.array("files", 20), (req, res) => {
@@ -411,7 +451,7 @@ app.post("/contact", (req, res) => {
 //get data for table gst and itr
 app.get("/getgst", (req, res) => {
   try {
-    db.query("SELECT *, HEX(fileData) AS fileData FROM gst", (err, results) => {
+    db.query("SELECT * FROM g", (err, results) => {
       if (err) {
         console.error(err);
         return res.status(500).send("Internal Server Error");
@@ -424,7 +464,6 @@ app.get("/getgst", (req, res) => {
     res.status(500).send("Internal Server Problem");
   }
 });
-
 
 //for getalll itr
 app.get("/getitr", (req, res) => {
