@@ -92,11 +92,14 @@ const FileUploadForm = () => {
         form.append("files", file);
       });
       if (formData.service[0] === "G") {
-        await axios.post("http://localhost:3002/upload/gt", form);
-      } else {
-        await axios.post("http://localhost:3002/upload/itr", form);
+        await axios.post("http://localhost:3002/upload/gtt", form);
+      } else if (formData.service[0] === "I") {
+        await axios.post("http://localhost:3002/upload/itt", form);
       }
-
+      else{
+        await axios.post("http://localhost:3002/upload/other", form);
+      }
+      console.log("data sent successfully");
       setSubmissionSuccess(true);
       setTimeout(() => {
         nav(`/user/${getid.id}`);

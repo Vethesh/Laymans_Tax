@@ -4,12 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { Menu } from "antd";
 
 import GstA from "./GstA";
-import Bookkeeping from "../Services/Bookkeeping";
 import IncomeA from "./IncomeA";
 import Profile from "../Pages/Profile";
 import Alluser from "./Alluser";
 import { UserOutlined } from "@ant-design/icons";
-import TaskAltOutlinedIcon from "@mui/icons-material/TaskAltOutlined";
+import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import ImportContactsOutlinedIcon from "@mui/icons-material/ImportContactsOutlined";
 import AccountBalanceOutlinedIcon from "@mui/icons-material/AccountBalanceOutlined";
 import CurrencyRupeeOutlinedIcon from "@mui/icons-material/CurrencyRupeeOutlined";
@@ -19,6 +18,7 @@ import HistoryEduOutlinedIcon from "@mui/icons-material/HistoryEduOutlined";
 import Blogs from "../Admin/Blogs";
 import MenuAppBar from "../Users/Appbar";
 import { Avatar, Button } from "@mui/material";
+import OthersA from "./OthersA";
 const Admin = () => {
   const [profile, setProfile] = useState(false);
   const [task, setTask] = useState(true);
@@ -34,7 +34,7 @@ const Admin = () => {
   const mail = JSON.parse(data);
   const handlelogout = () => {
     localStorage.removeItem("user");
-     localStorage.removeItem("formdata");
+    localStorage.removeItem("formdata");
     localStorage.removeItem("adminLoggedIn");
     navigate("/login");
   };
@@ -59,7 +59,7 @@ const Admin = () => {
                 height: "3.5rem",
                 color: "white",
               }}>
-              {mail.email[2].toUpperCase()}
+              {mail.email[0].toUpperCase()}
             </Avatar>
           </div>
           <div className="user-name" style={{ textAlign: "center" }}>
@@ -88,7 +88,7 @@ const Admin = () => {
               My profile
             </Menu.Item>
             <Menu.Item
-              icon={<TaskAltOutlinedIcon />}
+              icon={<GroupsOutlinedIcon />}
               onClick={() => {
                 setProfile(false);
                 setBook(false);
@@ -167,7 +167,7 @@ const Admin = () => {
       <div className="body-container">
         <div className="parent">
           <MenuAppBar />
-          {book && <Bookkeeping />}
+          {book && <OthersA />}
           {gst && <GstA />}
           {income && <IncomeA />}
 

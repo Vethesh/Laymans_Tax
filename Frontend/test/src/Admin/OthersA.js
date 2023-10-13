@@ -3,7 +3,7 @@ import { Table, Button } from "antd";
 import axios from "axios";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 
-const GstA = () => {
+const OthersA = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -12,7 +12,7 @@ const GstA = () => {
       setLoading(true);
 
       try {
-        const response = await axios.get(`http://localhost:3002/getgst`);
+        const response = await axios.get(`http://localhost:3002/getother`);
         const userData = response.data.data;
         console.log(userData);
 
@@ -41,47 +41,46 @@ const GstA = () => {
     fetchData();
   }, []);
 
- const toggleStatus = async record => {
-   const updatedData = data.map(item =>
-     item.key === record.key
-       ? {
-           ...item,
-           status: item.status === "completed" ? "pending" : "completed",
-         }
-       : item
-   );
-   setData(updatedData);
+  const toggleStatus = async record => {
+    const updatedData = data.map(item =>
+      item.key === record.key
+        ? {
+            ...item,
+            status: item.status === "completed" ? "pending" : "completed",
+          }
+        : item
+    );
+    setData(updatedData);
 
-   try {
-     const response = await axios.put(
-       `http://localhost:3002/update-status/${record.key}`,
-       {
-         status: record.status,
-       }
-     );
-     console.log(record.status);
-     console.log(response.data.message);
-   } catch (error) {
-     console.error("Error updating status:", error);
-   }
- };
+    try {
+      const response = await axios.put(
+        `http://localhost:3002/update-status/${record.key}`,
+        {
+          status: record.status,
+        }
+      );
+      console.log(record.status);
+      console.log(response.data.message);
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
+  };
 
-
- const downloadFile = (fileData, fileName) => {
-   try {
-     const combinedData = new Uint8Array(fileData.data);
-     const blob = new Blob([combinedData], { type: fileData.type });
-     const url = window.URL.createObjectURL(blob);
-     const a = document.createElement("a");
-     a.href = url;
-     a.download = fileName;
-     a.setAttribute("data-file-size", blob.size);
-     a.click();
-     window.URL.revokeObjectURL(url);
-   } catch (error) {
-     console.error("Error while downloading file:", error);
-   }
- };
+  const downloadFile = (fileData, fileName) => {
+    try {
+      const combinedData = new Uint8Array(fileData.data);
+      const blob = new Blob([combinedData], { type: fileData.type });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = fileName;
+      a.setAttribute("data-file-size", blob.size);
+      a.click();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error while downloading file:", error);
+    }
+  };
 
   const sendEmail = email => {
     window.location.href = `mailto:${email}`;
@@ -150,4 +149,4 @@ const GstA = () => {
   );
 };
 
-export default GstA;
+export default OthersA;

@@ -283,106 +283,134 @@ app.get("/getblog", (req, res) => {
 
 //user transaction
 const multer = require("multer");
+
 const upload = multer();
-//for gst
-app.post("/upload/gt", upload.array("files", 20), (req, res) => {
-  const files = req.files;
-  const { id, name, email, phone, date, service } = req.body;
 
-  // Check if required fields are present
-  if (
-    !id ||
-    !name ||
-    !email ||
-    !phone ||
-    !date ||
-    !service ||
-    !files ||
-    files.length === 0
-  ) {
-    return res.status(400).send("Missing required fields or files.");
-  }
+app.post("/upload/gtt", upload.array("files", 10), (req, res) => {
+  try {
+    const { id, name, email, phone, date, service } = req.body;
+    const userFiles = req.files;
 
-  const fileData = files.map(file => ({
-    file_name: file.originalname,
-    file_type: file.mimetype,
-    file_data: file.buffer,
-  }));
+    // Insert user data into the 'G' table
+    db.query(
+      "INSERT INTO G (id, name, email, phone, date, service) VALUES (?, ?, ?, ?, ?, ?)",
+      [id, name, email, phone, date, service],
+      (err, results) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send("Internal Server Error");
+        }
 
-  db.query(
-    "INSERT INTO gst (id,name, email, phone, date, service, filecount,filedata) VALUES (?,?, ?, ?, ?, ?,?,?)",
-    [
-      id,
-      name,
-      email,
-      phone,
-      date,
-      service,
-      files.length,
-      JSON.stringify(fileData),
-    ],
-    (err, result) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).send("Transaction creation failed.");
+        const userId = results.insertId; // Get the user ID from the insert query
+
+        // Insert files into the 'user_files' table
+        userFiles.forEach(file => {
+          const { originalname, mimetype, buffer } = file;
+          db.query(
+            "INSERT INTO user_files (user_id, file_name, file_type, file_data) VALUES (?, ?, ?, ?)",
+            [userId, originalname, mimetype, buffer],
+            err => {
+              if (err) {
+                console.error(err);
+                return res.status(500).send("Internal Server Error");
+              }
+            }
+          );
+        });
+
+        res.status(200).send("Data and files inserted successfully");
       }
-
-      // const transactionId = result.insertId;
-
-      res.send("Transaction data and files uploaded successfully.");
-    }
-  );
+    );
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Problem");
+  }
 });
 
 //for itr
-app.post("/upload/itr", upload.array("files", 30), (req, res) => {
-  const files = req.files;
-  const { id, name, email, phone, date, service } = req.body;
+app.post("/upload/itt", upload.array("files", 10), (req, res) => {
+  try {
+    const { id, name, email, phone, date, service } = req.body;
+    const userFiles = req.files;
 
-  // Check if required fields are present
-  if (
-    !id ||
-    !name ||
-    !email ||
-    !phone ||
-    !date ||
-    !service ||
-    !files ||
-    files.length === 0
-  ) {
-    return res.status(400).send("Missing required fields or files.");
-  }
+    // Insert user data into the 'G' table
+    db.query(
+      "INSERT INTO I (id, name, email, phone, date, service) VALUES (?, ?, ?, ?, ?, ?)",
+      [id, name, email, phone, date, service],
+      (err, results) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send("Internal Server Error");
+        }
 
-  const fileData = files.map(file => ({
-    file_name: file.originalname,
-    file_type: file.mimetype,
-    file_data: file.buffer,
-  }));
+        const userId = results.insertId; // Get the user ID from the insert query
 
-  db.query(
-    "INSERT INTO itr (id,name, email, phone, date, service, filecount,filedata) VALUES (?,?,?, ?, ?, ?, ?, ?)",
-    [
-      id,
-      name,
-      email,
-      phone,
-      date,
-      service,
-      files.length,
-      JSON.stringify(fileData),
-    ],
-    (err, result) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).send("Transaction creation failed.");
+        // Insert files into the 'user_files' table
+        userFiles.forEach(file => {
+          const { originalname, mimetype, buffer } = file;
+          db.query(
+            "INSERT INTO user_files_itr (user_id, file_name, file_type, file_data) VALUES (?, ?, ?, ?)",
+            [userId, originalname, mimetype, buffer],
+            err => {
+              if (err) {
+                console.error(err);
+                return res.status(500).send("Internal Server Error");
+              }
+            }
+          );
+        });
+
+        res.status(200).send("Data and files inserted successfully");
       }
-
-      // const transactionId = result.insertId;
-
-      res.send("Transaction data and files uploaded successfully.");
-    }
-  );
+    );
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Problem");
+  }
 });
+
+//for other
+app.post("/upload/other", upload.array("files", 10), (req, res) => {
+  try {
+    const { id, name, email, phone, date, service } = req.body;
+    const userFiles = req.files;
+
+    // Insert user data into the 'G' table
+    db.query(
+      "INSERT INTO O (id, name, email, phone, date, service) VALUES (?, ?, ?, ?, ?, ?)",
+      [id, name, email, phone, date, service],
+      (err, results) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send("Internal Server Error");
+        }
+
+        const userId = results.insertId; // Get the user ID from the insert query
+
+        // Insert files into the 'user_files' table
+        userFiles.forEach(file => {
+          const { originalname, mimetype, buffer } = file;
+          db.query(
+            "INSERT INTO user_files_other (user_id, file_name, file_type, file_data) VALUES (?, ?, ?, ?)",
+            [userId, originalname, mimetype, buffer],
+            err => {
+              if (err) {
+                console.error(err);
+                return res.status(500).send("Internal Server Error");
+              }
+            }
+          );
+        });
+
+        res.status(200).send("Data and files inserted successfully");
+      }
+    );
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Problem");
+  }
+});
+
 //contact page
 
 app.post("/contact", (req, res) => {
@@ -409,18 +437,22 @@ app.post("/contact", (req, res) => {
 //get data for table gst and itr
 app.get("/getgst", (req, res) => {
   try {
-    db.query(
-      "SELECT *, HEX(fileData) AS fileData FROM gst",
+    const sqlQuery = `
+  SELECT G.*, user_files.file_name, user_files.file_type, user_files.file_data
+  FROM G
+  LEFT JOIN user_files ON G.gid = user_files.user_id
+`;
 
-      (err, results) => {
-        if (err) {
-          console.error(err);
-          return res.status(500).send("Internal Server Error");
-        }
-
-        res.status(200).json({ data: results });
+    db.query(sqlQuery, (err, results) => {
+      if (err) {
+        console.error("Error executing SQL query:", err);
+        return res.status(500).send("Internal Server Error");
       }
-    );
+
+      console.log("SQL Query Results:", results); // Add this line for debugging
+
+      res.status(200).json({ data: results });
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send("Internal Server Problem");
@@ -430,19 +462,47 @@ app.get("/getgst", (req, res) => {
 //for getalll itr
 app.get("/getitr", (req, res) => {
   try {
-    db.query(
-      "SELECT *, HEX(fileData) AS fileData FROM itr",
+    const sqlQuery = `
+  SELECT I.*, user_files_itr.file_name, user_files_itr.file_type, user_files_itr.file_data
+  FROM I
+  LEFT JOIN user_files_itr ON I.iid = user_files_itr.user_id
+`;
 
-      (err, results) => {
-        if (err) {
-          console.error(err);
-          return res.status(500).send("Internal Server Error");
-        }
-        console.log("Query Results:", results);
-
-        res.status(200).json({ data: results });
+    db.query(sqlQuery, (err, results) => {
+      if (err) {
+        console.error("Error executing SQL query:", err);
+        return res.status(500).send("Internal Server Error");
       }
-    );
+
+      console.log("SQL Query Results:", results); // Add this line for debugging
+
+      res.status(200).json({ data: results });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal Server Problem");
+  }
+});
+
+//for getalll other
+app.get("/getother", (req, res) => {
+  try {
+    const sqlQuery = `
+  SELECT O.*, user_files_other.file_name, user_files_other.file_type, user_files_other.file_data
+  FROM O
+  LEFT JOIN user_files_other ON o.oid = user_files_other.user_id
+`;
+
+    db.query(sqlQuery, (err, results) => {
+      if (err) {
+        console.error("Error executing SQL query:", err);
+        return res.status(500).send("Internal Server Error");
+      }
+
+      console.log("SQL Query Results:", results); // Add this line for debugging
+
+      res.status(200).json({ data: results });
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send("Internal Server Problem");
@@ -459,6 +519,98 @@ app.get("/getallusers", (req, res) => {
       }
 
       res.status(200).json({ data: results });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal Server Problem");
+  }
+});
+
+//transaction data
+//for gst
+app.get("/transaction/gst/:id", (req, res) => {
+  const id = req.params.id;
+
+  db.query(
+    "SELECT service, date,progress FROM G WHERE id = ?",
+    [id],
+    (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send("Internal Server Error");
+      }
+
+      if (results.length === 0) {
+        return res.status(404).send("Data not found.");
+      }
+
+      res.json({ data: results });
+    }
+  );
+});
+
+//for itr
+app.get("/transaction/itr/:id", (req, res) => {
+  const id = req.params.id;
+
+  db.query(
+    "SELECT service, date ,progress FROM i WHERE id = ?",
+    [id],
+    (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send("Internal Server Error");
+      }
+
+      if (results.length === 0) {
+        return res.status(404).send("Data not found.");
+      }
+
+      res.json({ data: results });
+    }
+  );
+});
+
+//for other
+app.get("/transaction/other/:id", (req, res) => {
+  const id = req.params.id;
+
+  db.query(
+    "SELECT service, date ,progress FROM O WHERE id = ?",
+    [id],
+    (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send("Internal Server Error");
+      }
+
+      if (results.length === 0) {
+        return res.status(404).send("Data not found.");
+      }
+
+      res.json({ data: results });
+    }
+  );
+});
+
+//handle the status
+
+app.put("/update-status/:id", (req, res) => {
+  try {
+    const { id } = req.params.id;
+    const { status } = req.body;
+
+    // Determine the progress value based on the status
+    const progress = status === "completed" ? 1 : 0;
+
+    const sqlQuery = "UPDATE G SET progress = ? WHERE gid = ?";
+    db.query(sqlQuery, [progress, id], (err, results) => {
+      if (err) {
+        console.error("Error updating progress:", err);
+        return res.status(500).send("Internal Server Error");
+      }
+
+      res.status(200).json({ message: "Progress updated successfully" });
     });
   } catch (error) {
     console.log(error);

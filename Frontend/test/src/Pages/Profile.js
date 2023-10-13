@@ -1,20 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  TextField,
-  Typography,
-  Container,
-  Grid,
-  Paper,
-  CssBaseline,
-} from "@mui/material";
-import {
-  Edit as EditIcon,
-  Save as SaveIcon,
-  Cancel as CancelIcon,
-} from "@mui/icons-material";
 import axios from "axios";
-import Spinner from "../Componenets/Spinner";
+import { message } from "antd";
 
 const Profile = () => {
   const [loading, setLoading] = useState(false);
@@ -23,9 +9,16 @@ const Profile = () => {
     email: "",
     phone: "",
   });
+  const [editedFormData, setEditedFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+  });
   const [isEditing, setIsEditing] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
+    // Fetch user data when the component mounts
     const data = localStorage.getItem("user");
     const getid = JSON.parse(data);
     const userId = getid?.id;
@@ -34,11 +27,8 @@ const Profile = () => {
       axios
         .get(`http://localhost:3002/user/${userId}`)
         .then(response => {
-          const Data = response.data.user;
-          setFormData({
-            ...formData,
-            ...Data,
-          });
+          const userData = response.data.user;
+          setFormData(userData);
         })
         .catch(error => {
           console.error(error);
@@ -47,114 +37,119 @@ const Profile = () => {
   }, []);
 
   const handleEditClick = () => {
+    // Enable editing and initialize editedFormData with the current formData
     setIsEditing(true);
+    setIsUpdating(true);
+
+    setEditedFormData({ ...formData });
   };
 
-  const handleSubmit = async () => {
+  const handleUpdateClick = async () => {
     try {
       setLoading(true);
-      // Simulate an update operation with a delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
 
-      // For demonstration purposes, we'll just show a success message
+      // Send the editedFormData to the server
+      const data = localStorage.getItem("user");
+      const getid = JSON.parse(data);
+      const userId = getid?.id;
+
+      if (userId) {
+        const response = await axios.put(
+          `http://localhost:3002/user/${userId}/update`,
+          editedFormData
+        );
+
+        if (response.status === 200) {
+          setIsEditing(false); // Disable editing after saving
+          setIsUpdating(false); // Disable updating after saving
+          // Update the formData with the edited data
+          setFormData({ ...editedFormData });
+          message.success("Profile updated successfully");
+        } else {
+          message.error("Failed to update profile");
+        }
+      }
+
       setLoading(false);
-      alert("Profile updated successfully");
-      setIsEditing(false); // Disable editing after saving
     } catch (error) {
       setLoading(false);
-      alert("Failed to update profile");
+      message.error("Failed to update profile");
     }
   };
 
+  const handleChange = e => {
+    const { name, value } = e.target;
+    // Update the editedFormData when the user edits the form fields
+    setEditedFormData({ ...editedFormData, [name]: value });
+  };
+
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      {loading && <Spinner />}
-      <Paper elevation={3} style={{ padding: "16px", margin: "16px auto" }}>
-        <Typography variant="h5" align="center">
-          User Profile
-        </Typography>
-        <form onSubmit={handleSubmit}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                fullWidth
-                label="Name"
-                name="name"
-                disabled={!isEditing}
-                value={formData.name}
-                onChange={e =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
-              />
-            </Grid>
+    <div style={{ maxWidth: "400px", margin: "0 auto" }}>
+      {loading && <div>Loading...</div>}
+      <div style={{ padding: "16px" }}>
+        <h2 style={{ textAlign: "center" }}>User Profile</h2>
+        <form>
+          <div>
+            <label>Name:</label>
+            <input
+              type="text"
+              name="name"
+              disabled={!isEditing}
+              value={isEditing ? editedFormData.name : formData.name}
+              onChange={handleChange}
+            />
+          </div>
 
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                fullWidth
-                label="Email"
-                name="email"
-                type="email"
-                disabled={!isEditing}
-                value={formData.email}
-                onChange={e =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-              />
-            </Grid>
+          <div>
+            <label>Email:</label>
+            <input
+              type="email"
+              name="email"
+              disabled={!isEditing}
+              value={isEditing ? editedFormData.email : formData.email}
+              onChange={handleChange}
+            />
+          </div>
 
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                fullWidth
-                label="Phone"
-                name="phone"
-                disabled={!isEditing}
-                value={formData.phone}
-                onChange={e =>
-                  setFormData({ ...formData, phone: e.target.value })
-                }
-              />
-            </Grid>
+          <div>
+            <label>Phone:</label>
+            <input
+              type="text"
+              name="phone"
+              disabled={!isEditing}
+              value={isEditing ? editedFormData.phone : formData.phone}
+              onChange={handleChange}
+            />
+          </div>
 
-            <Grid item xs={12}>
-              {isEditing ? (
-                <>
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    startIcon={<SaveIcon />}>
-                    Save
-                  </Button>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    color="default"
-                    startIcon={<CancelIcon />}
-                    onClick={() => setIsEditing(false)}
-                    style={{ marginTop: "8px" }}>
-                    Cancel
-                  </Button>
-                </>
-              ) : (
-                <Button
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  startIcon={<EditIcon />}
-                  onClick={handleEditClick}>
-                  Edit Profile
-                </Button>
-              )}
-            </Grid>
-          </Grid>
+          <div>
+            {isEditing ? (
+              <>
+                <button
+                  type="button"
+                  onClick={handleUpdateClick}
+                  disabled={isUpdating}>
+                  Update
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsEditing(false);
+                    setIsUpdating(false);
+                  }}
+                  style={{ marginTop: "8px" }}>
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <button type="button" onClick={handleEditClick}>
+                Edit Profile
+              </button>
+            )}
+          </div>
         </form>
-      </Paper>
-    </Container>
+      </div>
+    </div>
   );
 };
 
