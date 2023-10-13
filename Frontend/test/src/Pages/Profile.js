@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { message } from "antd";
+
+import { message } from "antd"; // Import Ant Design message component
+
 
 const Profile = () => {
   const [loading, setLoading] = useState(false);

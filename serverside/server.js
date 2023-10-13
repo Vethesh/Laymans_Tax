@@ -508,7 +508,6 @@ app.get("/getother", (req, res) => {
     res.status(500).send("Internal Server Problem");
   }
 });
-
 //get allusers
 app.get("/getallusers", (req, res) => {
   try {

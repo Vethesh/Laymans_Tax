@@ -15,7 +15,6 @@ const GstA = () => {
         const response = await axios.get(`http://localhost:3002/getgst`);
         const userData = response.data.data;
         console.log(userData);
-
         if (userData.length > 0) {
           const filteredData = userData.map(user => ({
             name: user.name,
@@ -140,6 +139,7 @@ const GstA = () => {
     },
   ];
 
+  
   return (
     <Table
       dataSource={data}

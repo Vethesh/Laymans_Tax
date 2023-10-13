@@ -3,6 +3,7 @@ import axios from "axios";
 import TransactionCard from "./TransactionCard";
 import TransactionICard from "./TransactionICard";
 import TransactionO from "./TransactionO";
+
 const Task = () => {
   const [gstData, setGstData] = useState([]);
   const [itrData, setItrData] = useState([]);
@@ -33,14 +34,14 @@ const Task = () => {
           console.error(error);
         });
 
-        axios
-          .get(`http://localhost:3002/transaction/other/${userId}`)
-          .then(response => {
-            setOtherData(response.data.data);
-          })
-          .catch(error => {
-            console.error(error);
-          });
+      axios
+        .get(`http://localhost:3002/transaction/other/${userId}`)
+        .then(response => {
+          setOtherData(response.data.data);
+        })
+        .catch(error => {
+          console.error(error);
+        });
 
       setLoading(false);
     }
@@ -62,7 +63,7 @@ const Task = () => {
           <div
             style={{ display: "grid", gridTemplateColumns: "repeat(3,2fr)" }}>
             {gstData.map((ele, index) => (
-              <TransactionCard key={index} transactionGData={ele} />
+              <TransactionCard key={index} transactionData={ele} />
             ))}
           </div>
         )}
