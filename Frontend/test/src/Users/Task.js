@@ -28,6 +28,7 @@ const Task = () => {
       axios
         .get(`http://localhost:3002/transaction/itr/${userId}`)
         .then(response => {
+          console.log(response);
           setItrData(response.data.data);
         })
         .catch(error => {
@@ -37,6 +38,7 @@ const Task = () => {
       axios
         .get(`http://localhost:3002/transaction/other/${userId}`)
         .then(response => {
+          console.log(response);
           setOtherData(response.data.data);
         })
         .catch(error => {
@@ -63,7 +65,7 @@ const Task = () => {
           <div
             style={{ display: "grid", gridTemplateColumns: "repeat(3,2fr)" }}>
             {gstData.map((ele, index) => (
-              <TransactionCard key={index} transactionData={ele} />
+              <TransactionCard key={index} transactionGData={ele} />
             ))}
           </div>
         )}

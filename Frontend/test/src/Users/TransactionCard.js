@@ -19,7 +19,7 @@ const completedIconStyles = {
 
 const inProgressIconStyles = {
   color: "blue",
-  animation: "$spin 2s infinite linear",
+  animation: "spin 2s infinite linear",
   "@keyframes spin": {
     "0%": {
       transform: "rotate(0deg)",
@@ -36,9 +36,7 @@ const TransactionCard = ({ transactionGData }) => {
   {
       inProgress=true;
   }
- else{
-  inProgress=false;
- }
+
 
   return (
     <Card style={cardStyles}>
@@ -48,9 +46,10 @@ const TransactionCard = ({ transactionGData }) => {
           {transactionGData.date.slice(0, 10)}
         </Typography>
         {inProgress ? (
-          <Icon style={inProgressIconStyles}>autorenew</Icon>
-        ) : (
           <Icon style={completedIconStyles}>check_circle</Icon>
+        ) : (
+          
+          <Icon style={inProgressIconStyles}>autorenew</Icon>
         )}
 
         <Typography variant="body2" color="textSecondary">

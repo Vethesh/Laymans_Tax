@@ -32,11 +32,11 @@ const inProgressIconStyles = {
 
 const TransactionCard = ({ transactionOData }) => {
   let inProgress = false;
-//   if (transactionOData.progress === 1) {
-//     inProgress = true;
-//   } else {
-//     inProgress = false;
-//   }
+  if (transactionOData.progress === 1) {
+    inProgress = true;
+  } else {
+    inProgress = false;
+  }
 
   return (
     <Card style={cardStyles}>
@@ -46,9 +46,9 @@ const TransactionCard = ({ transactionOData }) => {
           {transactionOData.date.slice(0, 10)}
         </Typography>
         {inProgress ? (
-          <Icon style={inProgressIconStyles}>autorenew</Icon>
+         <Icon style={completedIconStyles}>check_circle</Icon> 
         ) : (
-          <Icon style={completedIconStyles}>check_circle</Icon>
+          <Icon style={inProgressIconStyles}>autorenew</Icon>
         )}
 
         <Typography variant="body2" color="textSecondary">

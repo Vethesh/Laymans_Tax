@@ -594,15 +594,69 @@ app.get("/transaction/other/:id", (req, res) => {
 
 //handle the status
 
-app.put("/update-status/:id", (req, res) => {
-  try {
-    const { id } = req.params.id;
-    const { status } = req.body;
 
+//for gst
+app.put("/update-status/g/:id", (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    console.log(id,status);
     // Determine the progress value based on the status
     const progress = status === "completed" ? 1 : 0;
 
     const sqlQuery = "UPDATE G SET progress = ? WHERE gid = ?";
+    db.query(sqlQuery, [progress, id], (err, results) => {
+      if (err) {
+        console.error("Error updating progress:", err);
+        return res.status(500).send("Internal Server Error");
+      }
+
+      res.status(200).json({ message: "Progress updated successfully" });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal Server Problem");
+  }
+});
+
+
+//for itr
+app.put("/update-status/i/:id", (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body; // Correctly access the "status" key from the request body
+    console.log(id, status);
+
+    // Determine the progress value based on the status
+    const progress = status === "completed" ? 1 : 0;
+
+    const sqlQuery = "UPDATE I SET progress = ? WHERE iid = ?";
+    db.query(sqlQuery, [progress, id], (err, results) => {
+      if (err) {
+        console.error("Error updating progress:", err);
+        return res.status(500).send("Internal Server Error");
+      }
+
+      res.status(200).json({ message: "Progress updated successfully" });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal Server Problem");
+  }
+});
+
+
+//for other
+
+app.put("/update-status/o/:id", (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    console.log(id, status);
+    // Determine the progress value based on the status
+    const progress = status === "completed" ? 1 : 0;
+
+    const sqlQuery = "UPDATE O SET progress = ? WHERE oid = ?";
     db.query(sqlQuery, [progress, id], (err, results) => {
       if (err) {
         console.error("Error updating progress:", err);
