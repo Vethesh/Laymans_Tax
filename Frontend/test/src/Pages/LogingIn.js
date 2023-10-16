@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { Form, message } from "antd";
 import Input from "antd/es/input/Input";
 import { Link, useNavigate } from "react-router-dom";
@@ -21,32 +21,23 @@ const LogingIn = () => {
       console.log(data);
       setLoad(false);
 
-      if (data.type === "admin") {
-        // Check if an admin is already logged in
-        const adminLoggedIn = localStorage.getItem("adminLoggedIn");
-
-        if (!adminLoggedIn) {
-          // If no admin is logged in, set the adminLoggedIn flag and proceed
-          localStorage.setItem("adminLoggedIn", "true");
-          message.success("Login successful");
-          localStorage.setItem(
-            "user",
-            JSON.stringify({ ...data, password: "" })
-          );
+      if (data.sessionID) {
+        // Save the session ID to local storage
+        localStorage.setItem("sessionID", data.sessionID);
+        localStorage.setItem("user", JSON.stringify(data));
+        // Redirect to the user's or admin's dashboard based on their type
+        if (data.type === "admin") {
           navigate(`/admin/${data.id}`);
         } else {
-          // If an admin is already logged in, show an error message
-          message.error("Admin is already logged in.");
+          navigate(`/user/${data.id}`);
         }
       } else {
-        // Redirect to the user's page for non-admin users
-        message.success("Login successful");
-        localStorage.setItem("user", JSON.stringify({ ...data, password: "" }));
-        navigate(`/user/${data.id}`);
+        // Handle login failure
+        message.error("Login failed. Please check your credentials.");
       }
     } catch (error) {
       setLoad(false);
-      message.error("Wrong username or password. Please reset your password if needed.");
+      message.error("An error occurred while logging in. Please try again.");
     }
   };
 
@@ -78,7 +69,7 @@ const LogingIn = () => {
               </div>
               <Link to="/signup">Don't have an account yet? Register here</Link>
               <br />
-              <Link to="/forgot">Forgot Password?</Link> {/* Added Forgot Password link */}
+              <Link to="/forgot">Forgot Password?</Link>
             </div>
           </div>
         </Form>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 import { Menu } from "antd";
 
@@ -22,123 +22,138 @@ const User = () => {
   const [activeSection, setActiveSection] = useState("task"); // Default active section
   const [showProfile, setShowProfile] = useState(false); // Control whether to show the profile section
   const data = localStorage.getItem("user");
+  const sid = localStorage.getItem("sessionID");
   const mail = JSON.parse(data);
+  console.log(mail);
+  useEffect(() => {
+    if (!sid) {
+      navigate("/home");
+    }
+  }, [sid, navigate]);
+
   const handlelogout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("formdata");
+    localStorage.removeItem("sessionID");
     navigate("/login");
   };
   const handleback = () => {
-    navigate("/");
+    navigate("/home");
   };
   return (
-    <div className="main-user">
-      <div className="nav-container">
-        <div className="user-info">
-          <div className="go-back">
-            <Button
-              sx={{ marginTop: "3%" }}
-              startIcon={<KeyboardBackspaceOutlinedIcon />}
-              onClick={handleback}>
-              Home
-            </Button>
+    <>
+      {!sid ? (
+        navigate("/home")
+      ) : (
+        <div className="main-user">
+          <div className="nav-container">
+            <div className="user-info">
+              <div className="go-back">
+                <Button
+                  sx={{ marginTop: "3%" }}
+                  startIcon={<KeyboardBackspaceOutlinedIcon />}
+                  onClick={handleback}>
+                  Home
+                </Button>
+              </div>
+              <div className="avatar">
+                <Avatar
+                  sx={{
+                    bgcolor: "orange",
+                    marginLeft: "40%",
+                    width: "3.5rem",
+                    height: "3.5rem",
+                  }}>
+                  {mail.email[0].toUpperCase()}
+                </Avatar>
+              </div>
+              <div className="user-name" style={{ textAlign: "center" }}>
+                Hello {mail.email}
+              </div>
+            </div>
+            <div className="options">
+              <Menu
+                theme="dark"
+                style={{
+                  display: "grid",
+                  gridGap: "1rem",
+                  fontSize: "1rem",
+                  fontWeight: "bold",
+                }}>
+                <Menu.Item
+                  icon={<UserOutlined />}
+                  key="profile"
+                  onClick={() => {
+                    setActiveSection("profile");
+                    setShowProfile(true);
+                  }}>
+                  My profile
+                </Menu.Item>
+                <Menu.Item
+                  icon={<TaskAltOutlinedIcon />}
+                  key="task"
+                  onClick={() => {
+                    setActiveSection("task");
+                    setShowProfile(false); // Close the profile section
+                  }}>
+                  My task
+                </Menu.Item>
+                <Menu.Item
+                  icon={<ImportContactsOutlinedIcon />}
+                  key="book"
+                  onClick={() => {
+                    setActiveSection("book");
+                    setShowProfile(false); // Close the profile section
+                  }}>
+                  Book keeping
+                </Menu.Item>
+                <Menu.Item
+                  icon={<AccountBalanceOutlinedIcon />}
+                  key="gst"
+                  onClick={() => {
+                    setActiveSection("gst");
+                    setShowProfile(false); // Close the profile section
+                  }}>
+                  Gst
+                </Menu.Item>
+                <Menu.Item
+                  icon={<CurrencyRupeeOutlinedIcon />}
+                  key="income"
+                  onClick={() => {
+                    setActiveSection("income");
+                    setShowProfile(false); // Close the profile section
+                  }}>
+                  Income
+                </Menu.Item>
+              </Menu>
+            </div>
+            <div className="btn">
+              <Button
+                onClick={handlelogout}
+                endIcon={<LogoutIcon />}
+                style={{
+                  width: "60%",
+                  marginTop: "10%",
+                }}
+                color="error"
+                variant="contained">
+                Log out
+              </Button>
+            </div>
           </div>
-          <div className="avatar">
-            <Avatar
-              sx={{
-                bgcolor: "orange",
-                marginLeft: "40%",
-                width: "3.5rem",
-                height: "3.5rem",
-              }}>
-              {mail.email[0].toUpperCase()}
-            </Avatar>
-          </div>
-          <div className="user-name" style={{ textAlign: "center" }}>
-            Hello {mail.email}
+          <div className="body-container">
+            <div className="parent">
+              <MenuAppBar />
+              {showProfile && <Profile />}
+              {activeSection === "book" && <Bookkeeping />}
+              {activeSection === "gst" && <Gst />}
+              {activeSection === "income" && <Income />}
+              {activeSection === "task" && <Task />}
+            </div>
           </div>
         </div>
-        <div className="options">
-          <Menu
-            theme="dark"
-            style={{
-              display: "grid",
-              gridGap: "1rem",
-              fontSize: "1rem",
-              fontWeight: "bold",
-            }}>
-            <Menu.Item
-              icon={<UserOutlined />}
-              key="profile"
-              onClick={() => {
-                setActiveSection("profile");
-                setShowProfile(true);
-              }}>
-              My profile
-            </Menu.Item>
-            <Menu.Item
-              icon={<TaskAltOutlinedIcon />}
-              key="task"
-              onClick={() => {
-                setActiveSection("task");
-                setShowProfile(false); // Close the profile section
-              }}>
-              My task
-            </Menu.Item>
-            <Menu.Item
-              icon={<ImportContactsOutlinedIcon />}
-              key="book"
-              onClick={() => {
-                setActiveSection("book");
-                setShowProfile(false); // Close the profile section
-              }}>
-              Book keeping
-            </Menu.Item>
-            <Menu.Item
-              icon={<AccountBalanceOutlinedIcon />}
-              key="gst"
-              onClick={() => {
-                setActiveSection("gst");
-                setShowProfile(false); // Close the profile section
-              }}>
-              Gst
-            </Menu.Item>
-            <Menu.Item
-              icon={<CurrencyRupeeOutlinedIcon />}
-              key="income"
-              onClick={() => {
-                setActiveSection("income");
-                setShowProfile(false); // Close the profile section
-              }}>
-              Income
-            </Menu.Item>
-          </Menu>
-        </div>
-        <div className="btn">
-          <Button
-            onClick={handlelogout}
-            endIcon={<LogoutIcon />}
-            style={{
-              width: "60%",
-              marginTop: "10%",
-            }}
-            color="error"
-            variant="contained">
-            Log out
-          </Button>
-        </div>
-      </div>
-      <div className="body-container">
-        <div className="parent">
-          <MenuAppBar />
-          {showProfile && <Profile />}
-          {activeSection === "book" && <Bookkeeping />}
-          {activeSection === "gst" && <Gst />}
-          {activeSection === "income" && <Income />}
-          {activeSection === "task" && <Task />}
-        </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 

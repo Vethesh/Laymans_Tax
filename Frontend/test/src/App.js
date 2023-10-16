@@ -18,17 +18,27 @@ import FormData from "./Componenets/FormData";
 import Gst from "./Services/Gst";
 import Forgotpassword from "./Pages/Forgotpassword";
 function App() {
+  const hasSession = Boolean(localStorage.getItem("user"));
+  const data = localStorage.getItem("user");
+  const a = JSON.parse(data);
   return (
     <div style={{ width: "100%", height: "100%" }}>
       <Routes>
         <Route
           path="/"
           element={
-            <Wrap>
+            hasSession ? (
+              a.type === "user" ? (
+                <Navigate to={`/user/${a.id}`} />
+              ) : (
+                <Navigate to={`/admin/${a.id}`} />
+              )
+            ) : (
               <Home />
-            </Wrap>
+            )
           }
         />
+        <Route path="/home" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<LogingIn />} />
         <Route path="/bookkeeping" element={<Bookeeping />} />
@@ -49,17 +59,17 @@ function App() {
   );
 }
 
-export function Wrap({ child }) {
-  const data = localStorage.getItem("user");
-  const a = JSON.parse(data);
-  if (data) {
-    if (a.type === "admin") {
-      return <Navigate to={`/admin/${a.id}`} />;
-    } else {
-      return <Navigate to={`/user/${a.id}`} />;
-    }
-  } else {
-    return <Navigate to={"/login"} />;
-  }
-}
+// export function Wrap({ child }) {
+//   const data = localStorage.getItem("user");
+//   const a = JSON.parse(data);
+//   if (data) {
+//     if (a.type === "admin") {
+//       return <Navigate to={`/admin/${a.id}`} />;
+//     } else {
+//       return <Navigate to={`/user/${a.id}`} />;
+//     }
+//   } else {
+//     return <Navigate to={"/login"} />;
+//   }
+// }
 export default App;

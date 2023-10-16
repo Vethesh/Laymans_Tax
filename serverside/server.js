@@ -7,6 +7,9 @@ const db = require("./config/Db");
 const bcrypt = require("bcrypt");
 const bodyParser = require("body-parser");
 // const crypto = require("crypto");
+
+const session = require("express-session");
+const { v4: uuidv4 } = require("uuid");
 app.use(bodyParser.urlencoded({ extended: true }));
 
 dotenv.config();
@@ -77,9 +80,17 @@ app.post("/user/register", (req, res) => {
 
 //user login
 
+// Initialize session middleware
+app.use(
+  session({
+    secret: "laymantax",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
 app.post("/user/login", (req, res) => {
   const { email, password } = req.body;
-  console.log(req.body);
   if (!email || !password) {
     return res.status(400).send("Email and password are required.");
   }
@@ -107,8 +118,19 @@ app.post("/user/login", (req, res) => {
 
         if (isMatch) {
           // Passwords match; user is authenticated
+
+          // Generate a session ID
+          const sessionID = uuidv4();
+          req.session.sessionID = sessionID;
+
           const { id, email, type } = user;
-          res.json({ id, email, type, message: "Login successful." });
+          res.json({
+            id,
+            email,
+            type,
+            sessionID,
+            message: "Login successful.",
+          });
         } else {
           // Passwords do not match
           res.status(401).send("Invalid email or password.");
@@ -594,13 +616,12 @@ app.get("/transaction/other/:id", (req, res) => {
 
 //handle the status
 
-
 //for gst
 app.put("/update-status/g/:id", (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
-    console.log(id,status);
+    console.log(id, status);
     // Determine the progress value based on the status
     const progress = status === "completed" ? 1 : 0;
 
@@ -618,7 +639,6 @@ app.put("/update-status/g/:id", (req, res) => {
     res.status(500).send("Internal Server Problem");
   }
 });
-
 
 //for itr
 app.put("/update-status/i/:id", (req, res) => {
@@ -645,7 +665,6 @@ app.put("/update-status/i/:id", (req, res) => {
   }
 });
 
-
 //for other
 
 app.put("/update-status/o/:id", (req, res) => {
@@ -668,6 +687,23 @@ app.put("/update-status/o/:id", (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).send("Internal Server Problem");
+  }
+});
+
+//get all user queries
+
+app.get("/getuser-queries", (req, res) => {
+  try {
+    db.query("select * from contact", (err, result) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).send({ msg: "internal server error" });
+      }
+      return res.status(200).send({ data: result });
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ msg: "internal server error" });
   }
 });
 
