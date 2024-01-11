@@ -1,0 +1,60 @@
+
+
+/* Base styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Container styles */
+.container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Form styles */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label, h2 {
+  margin-bottom: 8px;
+  /* color: white; */
+
+}
+
+input,
+button {
+  margin-bottom: 16px;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  width: 100%;
+  background: white;
+}
+
+button {
+  cursor: pointer;
+  background-color: rgb(189, 54, 5);
+  color: white;
+  border: none;
+}
+
+/* Media query for mobile screens */
+@media screen and (max-width: 500px) {
+  .container {
+    width: 90%;
+    padding: 10px;
+  }
+
+  input,
+  button {
+    margin-bottom: 12px;
+    font-size: 16px;
+  }
+}

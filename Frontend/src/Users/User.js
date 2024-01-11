@@ -17,6 +17,7 @@ import { Avatar, Button } from "@mui/material";
 import MenuAppBar from "./Appbar";
 import { useNavigate } from "react-router-dom";
 import KeyboardBackspaceOutlinedIcon from "@mui/icons-material/KeyboardBackspaceOutlined";
+import MenuOpenRoundedIcon from "@mui/icons-material/MenuOpenRounded";
 const User = () => {
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState("task"); // Default active section
@@ -40,6 +41,9 @@ const User = () => {
   const handleback = () => {
     navigate("/home");
   };
+  const toggleSidebar = () => {
+    
+  };
   return (
     <>
       {!sid ? (
@@ -48,11 +52,18 @@ const User = () => {
         <div className="main-user">
           <div className="nav-container">
             <div className="user-info">
+              <MenuOpenRoundedIcon />
+              <div className="hamburger-menu" onClick={toggleSidebar}>
+                <div className="bar"></div>
+                <div className="bar"></div>
+                <div className="bar"></div>
+              </div>
               <div className="go-back">
                 <Button
                   sx={{ marginTop: "3%" }}
                   startIcon={<KeyboardBackspaceOutlinedIcon />}
-                  onClick={handleback}>
+                  onClick={handleback}
+                >
                   Home
                 </Button>
               </div>
@@ -63,7 +74,8 @@ const User = () => {
                     marginLeft: "40%",
                     width: "3.5rem",
                     height: "3.5rem",
-                  }}>
+                  }}
+                >
                   {mail.email[0].toUpperCase()}
                 </Avatar>
               </div>
@@ -79,14 +91,16 @@ const User = () => {
                   gridGap: "1rem",
                   fontSize: "1rem",
                   fontWeight: "bold",
-                }}>
+                }}
+              >
                 <Menu.Item
                   icon={<UserOutlined />}
                   key="profile"
                   onClick={() => {
                     setActiveSection("profile");
                     setShowProfile(true);
-                  }}>
+                  }}
+                >
                   My profile
                 </Menu.Item>
                 <Menu.Item
@@ -95,7 +109,8 @@ const User = () => {
                   onClick={() => {
                     setActiveSection("task");
                     setShowProfile(false); // Close the profile section
-                  }}>
+                  }}
+                >
                   My task
                 </Menu.Item>
                 <Menu.Item
@@ -104,7 +119,8 @@ const User = () => {
                   onClick={() => {
                     setActiveSection("book");
                     setShowProfile(false); // Close the profile section
-                  }}>
+                  }}
+                >
                   Book keeping
                 </Menu.Item>
                 <Menu.Item
@@ -113,7 +129,8 @@ const User = () => {
                   onClick={() => {
                     setActiveSection("gst");
                     setShowProfile(false); // Close the profile section
-                  }}>
+                  }}
+                >
                   Gst
                 </Menu.Item>
                 <Menu.Item
@@ -122,7 +139,8 @@ const User = () => {
                   onClick={() => {
                     setActiveSection("income");
                     setShowProfile(false); // Close the profile section
-                  }}>
+                  }}
+                >
                   Income
                 </Menu.Item>
               </Menu>
@@ -136,7 +154,8 @@ const User = () => {
                   marginTop: "10%",
                 }}
                 color="error"
-                variant="contained">
+                variant="contained"
+              >
                 Log out
               </Button>
             </div>

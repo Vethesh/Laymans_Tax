@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import './profile.css';
+
+
 
 import { message } from "antd"; // Import Ant Design message component
 
@@ -93,7 +96,7 @@ const Profile = () => {
         <form>
           <div>
             <label>Name:</label>
-            <input
+            <input 
               type="text"
               name="name"
               disabled={!isEditing}
